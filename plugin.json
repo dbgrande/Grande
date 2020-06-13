@@ -1,0 +1,61 @@
+{
+  "slug": "Grande",
+  "name": "Grande",
+  "version": "1.0.0",
+  "license": "GPL-3.0-or-later",
+  "brand": "Grande",
+  "author": "David Grande",
+  "authorEmail": "",
+  "authorUrl": "",
+  "pluginUrl": "",
+  "manualUrl": "",
+  "sourceUrl": "",
+  "donateUrl": "",
+  "changelogUrl": "",
+  "modules": [
+    {
+      "slug": "Blank1HP",
+      "name": "Blank1HP",
+      "description": "1HP-wide blank panel.",
+      "tags": [
+        "Blank"
+      ]
+    },
+    {
+      "slug": "Quant",
+      "name": "Quant",
+      "description": "Quantizer with equi-likely notes mode.",
+      "tags": [
+        "Quantizer",
+        "Polyphonic"
+      ]
+    },
+    {
+      "slug": "Quant31",
+      "name": "Quant31",
+      "description": "31-TET Quantizer with equi-likely notes mode.",
+      "tags": [
+        "Quantizer",
+        "Polyphonic"
+      ]
+    },
+    {
+      "slug": "SampleDelays",
+      "name": "SampleDelays",
+      "description": "Provides multiple sample delay options.",
+      "tags": [
+        "Delay",
+        "Polyphonic"
+      ]
+    },
+    {
+      "slug": "Scale",
+      "name": "Scale",
+      "description": "Additional scales for Quant.",
+      "tags": [
+        "Quantizer",
+        "Polyphonic"
+      ]
+    }
+  ]
+}
