@@ -195,25 +195,24 @@ struct Quant31 : Module {
 			float freq = 31.f * (rawnote - octave);
 			int n = floor(freq);
 			int note;
-			if (rounding_mode == -1)  // round down
-				if (equi_likely == 1)
-					note = scale[(int)(floor(note_per_oct * (rawnote - octave)))];
-				else
+			if (equi_likely == 0) {  // normal mode
+				if (rounding_mode == -1)  // round down
 					note = lower[n];
-			else if (rounding_mode == 1)  // round up
-				if (equi_likely == 1)
-					note = scale[(int)(ceil(note_per_oct * (rawnote - octave)))];
-				else
+				else if (rounding_mode == 1)  // round up
 					note = upper[n];
-			else {  // round nearest
-				if (equi_likely == 1)
-					note = scale[(int)(floor(note_per_oct * (rawnote - octave) + 0.5f))];
-				else {
-					float thresh = (lower[n] + upper[n]) / 2.f;
-					if (freq >= thresh)
+				else {  // round nearest
+					if (freq >= (lower[n] + upper[n]) / 2.f)  // threshold
 						note = upper[n];
 					else
 						note = lower[n];
+				}
+			} else {  // equi-likely mode
+				if (rounding_mode == -1)  // round down
+					note = scale[(int)(floor(note_per_oct * (rawnote - octave)))];
+				else if (rounding_mode == 1)  // round up
+					note = scale[(int)(ceil(note_per_oct * (rawnote - octave)))];
+				else {  // round nearest
+					note = scale[(int)(floor(note_per_oct * (rawnote - octave) + 0.5f))];
 				}
 			}
 			if (note == 31) {
