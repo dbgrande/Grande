@@ -20,7 +20,7 @@ struct Quant : Module {
 		NUM_PARAMS
 	};
 	enum InputIds {
-		TRANSPOSE_INPUT,
+		ROOT_INPUT,
 		SCALE_INPUT,
 		CV_IN_INPUT,
 		NUM_INPUTS
@@ -133,19 +133,19 @@ struct Quant : Module {
 				upper[i] = scale[j + 1];
 			}
 
-			// transpose
-			int channels = inputs[TRANSPOSE_INPUT].getChannels();
+			// transpose to specified root
+			int channels = inputs[ROOT_INPUT].getChannels();
 			if (channels == 0)  // nothing plugged in, reset all channels to 0
 				for (int c = 0; c < 16; c++)
 					transpose[c] = 0.f;
 			else if (channels == 1) { // mono tranpose, apply to all channels
-				float t = inputs[TRANSPOSE_INPUT].getVoltage(0);
+				float t = inputs[ROOT_INPUT].getVoltage(0);
 				for (int c = 0; c < 16; c++)
 					transpose[c] = t;
 			}
 			else { // full poly, separate transpose per channel
 				for (int c = 0; c < channels; c++)
-					transpose[c] = inputs[TRANSPOSE_INPUT].getVoltage(c);
+					transpose[c] = inputs[ROOT_INPUT].getVoltage(c);
 				for (int c = channels; c < 16; c++)  // zero out remaining
 					transpose[c] = 0.f;
 			}
@@ -156,7 +156,7 @@ struct Quant : Module {
 		// quantize cv input (polyphonic)
 		int channels = inputs[CV_IN_INPUT].getChannels();
 		for (int c = 0; c < channels; c++) {
-			float rawnote = inputs[CV_IN_INPUT].getVoltage(c);
+			float rawnote = inputs[CV_IN_INPUT].getVoltage(c) - transpose[c];
 			int octave = floor(rawnote);
 			float freq = 12.f * (rawnote - octave);
 			int n = floor(freq);
@@ -187,9 +187,9 @@ struct Quant : Module {
 				note = 0;
 			}
 			// output
-			cv_out[c] = octave + (note / 12.f);
-			outputs[CV_OUT_OUTPUT].setVoltage(cv_out[c] + transpose[c], c);
-			// generate trigger pulse on note change, but don't consider transpose
+			cv_out[c] = octave + (note / 12.f) + transpose[c];
+			outputs[CV_OUT_OUTPUT].setVoltage(cv_out[c], c);
+			// generate trigger pulse on note change
 			if (cv_out[c] != last_cv_out[c]) {
 				pulseGenerators[c].trigger(1e-3f);
 				last_cv_out[c] = cv_out[c];
@@ -217,7 +217,7 @@ struct QuantWidget : ModuleWidget {
 
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(14.45, 23.0)), module, Quant::SCALE_INPUT));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(14.45, 38.0)), module, Quant::TRANSPOSE_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(14.45, 38.0)), module, Quant::ROOT_INPUT));
 
 		addParam(createParam<CKSSThree>(mm2px(Vec(12.20, 49.0)), module, Quant::ROUNDING_PARAM));
 

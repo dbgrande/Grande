@@ -39,7 +39,7 @@ struct Quant31 : Module {
 		NUM_PARAMS
 	};
 	enum InputIds {
-		TRANSPOSE_INPUT,
+		ROOT_INPUT,
 		CV_IN_INPUT,
 		NUM_INPUTS
 	};
@@ -168,18 +168,18 @@ struct Quant31 : Module {
 			}
 
 			// transpose
-			int channels = inputs[TRANSPOSE_INPUT].getChannels();
+			int channels = inputs[ROOT_INPUT].getChannels();
 			if (channels == 0)  // nothing plugged in, reset all channels to 0
 				for (int c = 0; c < 16; c++)
 					transpose[c] = 0.f;
 			else if (channels == 1) { // mono tranpose, apply to all channels
-				float t = inputs[TRANSPOSE_INPUT].getVoltage(0);
+				float t = inputs[ROOT_INPUT].getVoltage(0);
 				for (int c = 0; c < 16; c++)
 					transpose[c] = t;
 			}
 			else { // full poly, separate transpose per channel
 				for (int c = 0; c < channels; c++)
-					transpose[c] = inputs[TRANSPOSE_INPUT].getVoltage(c);
+					transpose[c] = inputs[ROOT_INPUT].getVoltage(c);
 				for (int c = channels; c < 16; c++)  // zero out remaining
 					transpose[c] = 0.f;
 			}
@@ -190,7 +190,7 @@ struct Quant31 : Module {
 		// quantize cv input (polyphonic)
 		int channels = inputs[CV_IN_INPUT].getChannels();
 		for (int c = 0; c < channels; c++) {
-			float rawnote = inputs[CV_IN_INPUT].getVoltage(c);
+			float rawnote = inputs[CV_IN_INPUT].getVoltage(c) - transpose[c];
 			int octave = floor(rawnote);
 			float freq = 31.f * (rawnote - octave);
 			int n = floor(freq);
@@ -221,9 +221,9 @@ struct Quant31 : Module {
 				note = 0;
 			}
 			// output
-			cv_out[c] = octave + (note / 31.f);
-			outputs[CV_OUT_OUTPUT].setVoltage(cv_out[c] + transpose[c], c);
-			// generate trigger pulse on note change, but don't consider transpose
+			cv_out[c] = octave + (note / 31.f) + transpose[c];
+			outputs[CV_OUT_OUTPUT].setVoltage(cv_out[c], c);
+			// generate trigger pulse on note change
 			if (cv_out[c] != last_cv_out[c]) {
 				pulseGenerators[c].trigger(1e-3f);
 				last_cv_out[c] = cv_out[c];
@@ -247,7 +247,7 @@ struct Quant31Widget : ModuleWidget {
 		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(24.0, 38.0)), module, Quant31::TRANSPOSE_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(24.0, 38.0)), module, Quant31::ROOT_INPUT));
 
 		addParam(createParam<CKSSThree>(mm2px(Vec(21.75, 49.0)), module, Quant31::ROUNDING_PARAM));
 
