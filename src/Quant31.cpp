@@ -101,6 +101,7 @@ struct Quant31 : Module {
 	float transpose[16];
 	float cv_out[16];
 	float last_cv_out[16] = { 0.f };
+	const float window = 0.001f;
 
 	void process(const ProcessArgs &args) override {
 		if (param_timer == 0) {
@@ -190,37 +191,48 @@ struct Quant31 : Module {
 		// quantize cv input (polyphonic)
 		int channels = inputs[CV_IN_INPUT].getChannels();
 		for (int c = 0; c < channels; c++) {
-			float rawnote = inputs[CV_IN_INPUT].getVoltage(c) - transpose[c];
-			int octave = floor(rawnote);
-			float freq = 31.f * (rawnote - octave);
-			int n = floor(freq);
+			// offset by +10V to avoid issues with going negative.
+			float rawnote = inputs[CV_IN_INPUT].getVoltage(c) + 10 - transpose[c];
+			float intPart, fracPart;
 			int note;
 			if (equi_likely == 0) {  // normal mode
-				if (rounding_mode == -1)  // round down
-					note = lower[n];
-				else if (rounding_mode == 1)  // round up
-					note = upper[n];
-				else {  // round nearest
-					if (freq >= (lower[n] + upper[n]) / 2.f)  // threshold
+				if (rounding_mode == -1) { // round down
+					fracPart = modff(rawnote + window, &intPart);
+					note = lower[(int)floor(31 * fracPart)];
+				}
+				else if (rounding_mode == 1) { // round up
+					fracPart = modff(rawnote - window, &intPart);
+					note = upper[(int)floor(31 * fracPart)];
+				}
+				else {  // round nearest (down)
+					fracPart = modff(rawnote - window, &intPart);
+					float threshold = 31 * fracPart;
+					int n = floor(threshold);
+					if (threshold >= (lower[n] + upper[n]) / 2.f)  // threshold
 						note = upper[n];
 					else
 						note = lower[n];
 				}
 			} else {  // equi-likely mode
-				if (rounding_mode == -1)  // round down
-					note = scale[(int)(floor(note_per_oct * (rawnote - octave)))];
-				else if (rounding_mode == 1)  // round up
-					note = scale[(int)(ceil(note_per_oct * (rawnote - octave)))];
-				else {  // round nearest
-					note = scale[(int)(floor(note_per_oct * (rawnote - octave) + 0.5f))];
+				if (rounding_mode == -1) { // round down
+					fracPart = modff(rawnote + window, &intPart);
+					note = scale[(int)(floor(note_per_oct * fracPart))];
+				}
+				else if (rounding_mode == 1) { // round up
+					fracPart = modff(rawnote - window, &intPart);
+					note = scale[(int)(ceil(note_per_oct * fracPart))];
+				}
+				else {  // round nearest (down)
+					fracPart = modff(rawnote - window, &intPart);
+					note = scale[(int)(floor(note_per_oct * fracPart + 0.5f))];
 				}
 			}
 			if (note == 31) {
-				octave++;
+				intPart++;
 				note = 0;
 			}
-			// output
-			cv_out[c] = octave + (note / 31.f) + transpose[c];
+			// output (offset back by -10V)
+			cv_out[c] = intPart - 10 + (note / 31.f) + transpose[c];
 			outputs[CV_OUT_OUTPUT].setVoltage(cv_out[c], c);
 			// generate trigger pulse on note change
 			if (cv_out[c] != last_cv_out[c]) {
