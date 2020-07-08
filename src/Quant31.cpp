@@ -101,7 +101,6 @@ struct Quant31 : Module {
 	float transpose[16];
 	float cv_out[16];
 	float last_cv_out[16] = { 0.f };
-	const float window = 0.001f;
 
 	void process(const ProcessArgs &args) override {
 		if (param_timer == 0) {
@@ -196,34 +195,50 @@ struct Quant31 : Module {
 			float intPart, fracPart;
 			int note;
 			if (equi_likely == 0) {  // normal mode
+				// quantize by half step, to match to VCV QNT and ML Quantum
 				if (rounding_mode == -1) { // round down
-					fracPart = modff(rawnote + window, &intPart);
-					note = lower[(int)floor(31 * fracPart)];
+					fracPart = 31 * modff(rawnote, &intPart);
+					int n = floor(fracPart);
+					if (fracPart > upper[n] - 0.5)
+						note = upper[n];
+					else
+						note = lower[n];
 				}
 				else if (rounding_mode == 1) { // round up
-					fracPart = modff(rawnote - window, &intPart);
-					note = upper[(int)floor(31 * fracPart)];
+					fracPart = 31 * modff(rawnote, &intPart);
+					int n = floor(fracPart);
+					if (fracPart > lower[n] + 0.5)
+						note = upper[n];
+					else
+						note = lower[n];
 				}
 				else {  // round nearest (down)
-					fracPart = modff(rawnote - window, &intPart);
-					float threshold = 31 * fracPart;
-					int n = floor(threshold);
-					if (threshold >= (lower[n] + upper[n]) / 2.f)  // threshold
+					fracPart = 31 * modff(rawnote, &intPart);
+					int n = floor(fracPart);
+					float temp = (lower[n] + upper[n]) / 2.f;
+					float threshold;
+					// if threshold between notes, good to go
+					if (abs(temp - floor(temp)) > 0.45)
+						threshold = temp;
+					else // up half a step
+						threshold = temp + 0.5;
+					if (fracPart > threshold)
 						note = upper[n];
 					else
 						note = lower[n];
 				}
 			} else {  // equi-likely mode
+				// in this case, can't serialize quantizers, so don't need window
 				if (rounding_mode == -1) { // round down
-					fracPart = modff(rawnote + window, &intPart);
+					fracPart = modff(rawnote, &intPart);
 					note = scale[(int)(floor(note_per_oct * fracPart))];
 				}
 				else if (rounding_mode == 1) { // round up
-					fracPart = modff(rawnote - window, &intPart);
+					fracPart = modff(rawnote, &intPart);
 					note = scale[(int)(ceil(note_per_oct * fracPart))];
 				}
 				else {  // round nearest (down)
-					fracPart = modff(rawnote - window, &intPart);
+					fracPart = modff(rawnote, &intPart);
 					note = scale[(int)(floor(note_per_oct * fracPart + 0.5f))];
 				}
 			}
