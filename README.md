@@ -69,6 +69,16 @@ Provides three sample-delay buffer chains giving one or two sample delays each.
 
 - Internally chained together to give up to six sample delays.
 
+CVInts (cvInt)
+-----------
+
+Provides 3 pairs of integer CVs from 0V to 10V (both + and –).
+
+CVBigInts (cvBI)
+-------------
+
+Provides 3 pairs of integer CVs from 0V to 32V (both + and –).
+
 
 License
 -------
