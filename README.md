@@ -17,8 +17,9 @@ Scale
 
 Provides extra scales for Quant quantizer.
 
+- **New:** Root note can now also be disabled.
 - Use a polyphonic switch and plug into Scale input of Quant.
-- Sends 12 control signals using polyphonic cable. Root note (channel 1) is always on.
+- Sends 12 control signals using polyphonic cable.
 
 ![Additional Scales](images/additional_scales.png "Additional Scales")
 
@@ -27,6 +28,7 @@ Quant
 
 12-TET Quantizer with Equi-likely mode.
 
+- **New:** Root note can now also be disable. If no notes are selected, it defaults to just the root note.
 - Scale (input): Use Scale plugins and polyphonic switch to allow selecting different scales.
 - Root (input): Defines root note of scale (1V/Oct, polyphonic)
 - Rounding mode (switch): –1 (down) = round down, 0 (center) = round nearest, 1 (up) = round up
@@ -34,7 +36,7 @@ Quant
 - In (input): CV input (1V/Oct, polyphonic)
 - Out (output): Quantized CV output (1V/Oct, polyphonic)
 - Trigger (output): Trigger whenever note changes (polyphonic)
-- Twelve buttons: Set current scale, or display externally defined scale. Root on bottom, and always on. Defaults to major scale.
+- Twelve buttons: Set current scale, or display externally defined scale. Root on bottom. Defaults to major scale.
 
 
 **Blues Scale using Normal quantization and rounding down:**

@@ -30,7 +30,7 @@ struct Scale : Module {
 
 	Scale() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(NOTE0_PARAM, 1.0, 1.0, 1.0, "Note0", "");  // Root note always selected
+		configParam(NOTE0_PARAM, 0.0, 1.0, 1.0, "Note0", "");  // Root note
 		configParam(NOTE1_PARAM, 0.0, 1.0, 0.0, "Note1", "");
 		configParam(NOTE2_PARAM, 0.0, 1.0, 1.0, "Note2", "");
 		configParam(NOTE3_PARAM, 0.0, 1.0, 0.0, "Note3", "");
@@ -83,10 +83,8 @@ struct ScaleWidget : ModuleWidget {
 		setModule(module);
 		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Scale.svg")));
 
-		//addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-		//addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.08, 19.20)), module, Scale::SCALE_OUTPUT));
 
@@ -101,7 +99,7 @@ struct ScaleWidget : ModuleWidget {
 		addParam(createParam<BlackButton>(mm2px(Vec(1.58, 89.0)), module, Scale::NOTE3_PARAM));
 		addParam(createParam<WhiteButton>(mm2px(Vec(1.58, 97.0)), module, Scale::NOTE2_PARAM));
 		addParam(createParam<BlackButton>(mm2px(Vec(1.58, 105.0)), module, Scale::NOTE1_PARAM));
-		addParam(createParam<WhiteButtonRoot>(mm2px(Vec(1.58, 113.0)), module, Scale::NOTE0_PARAM));
+		addParam(createParam<WhiteButton>(mm2px(Vec(1.58, 113.0)), module, Scale::NOTE0_PARAM));
 	}
 };
 

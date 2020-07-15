@@ -38,7 +38,7 @@ struct Quant : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(ROUNDING_PARAM, -1.0, 1.0, 0.0, "Rounding", "");
 		configParam(EQUI_PARAM, 0.0, 1.0, 0.0, "Equi-likely notes", "");
-		configParam(NOTE0_PARAM, 1.0, 1.0, 1.0, "Note0", "");  // Root note always selected
+		configParam(NOTE0_PARAM, 0.0, 1.0, 1.0, "Note0", "");  // Root note
 		configParam(NOTE1_PARAM, 0.0, 1.0, 0.0, "Note1", "");
 		configParam(NOTE2_PARAM, 0.0, 1.0, 1.0, "Note2", "");
 		configParam(NOTE3_PARAM, 0.0, 1.0, 0.0, "Note3", "");
@@ -87,17 +87,18 @@ struct Quant : Module {
 				for (int c = 0; c < schannels; c++)
 					input_scale[c] = inputs[SCALE_INPUT].getVoltage(c);
 				// display external scale on buttons
-				params[NOTE1_PARAM].setValue((input_scale[1] >= 1.f) ? 1 : 0);
-				params[NOTE2_PARAM].setValue((input_scale[2] >= 1.f) ? 1 : 0);
-				params[NOTE3_PARAM].setValue((input_scale[3] >= 1.f) ? 1 : 0);
-				params[NOTE4_PARAM].setValue((input_scale[4] >= 1.f) ? 1 : 0);
-				params[NOTE5_PARAM].setValue((input_scale[5] >= 1.f) ? 1 : 0);
-				params[NOTE6_PARAM].setValue((input_scale[6] >= 1.f) ? 1 : 0);
-				params[NOTE7_PARAM].setValue((input_scale[7] >= 1.f) ? 1 : 0);
-				params[NOTE8_PARAM].setValue((input_scale[8] >= 1.f) ? 1 : 0);
-				params[NOTE9_PARAM].setValue((input_scale[9] >= 1.f) ? 1 : 0);
-				params[NOTE10_PARAM].setValue((input_scale[10] >= 1.f) ? 1 : 0);
-				params[NOTE11_PARAM].setValue((input_scale[11] >= 1.f) ? 1 : 0);
+				params[NOTE0_PARAM].setValue((input_scale[0] > 1.f) ? 1 : 0);
+				params[NOTE1_PARAM].setValue((input_scale[1] > 1.f) ? 1 : 0);
+				params[NOTE2_PARAM].setValue((input_scale[2] > 1.f) ? 1 : 0);
+				params[NOTE3_PARAM].setValue((input_scale[3] > 1.f) ? 1 : 0);
+				params[NOTE4_PARAM].setValue((input_scale[4] > 1.f) ? 1 : 0);
+				params[NOTE5_PARAM].setValue((input_scale[5] > 1.f) ? 1 : 0);
+				params[NOTE6_PARAM].setValue((input_scale[6] > 1.f) ? 1 : 0);
+				params[NOTE7_PARAM].setValue((input_scale[7] > 1.f) ? 1 : 0);
+				params[NOTE8_PARAM].setValue((input_scale[8] > 1.f) ? 1 : 0);
+				params[NOTE9_PARAM].setValue((input_scale[9] > 1.f) ? 1 : 0);
+				params[NOTE10_PARAM].setValue((input_scale[10] > 1.f) ? 1 : 0);
+				params[NOTE11_PARAM].setValue((input_scale[11] > 1.f) ? 1 : 0);
 			}
 			else {
 				// no external scale, so read buttons (root on bottom)
@@ -114,22 +115,27 @@ struct Quant : Module {
 				input_scale[10] = 10 * std::round(params[NOTE10_PARAM].getValue());
 				input_scale[11] = 10 * std::round(params[NOTE11_PARAM].getValue());
 			}
-			scale[0] = 0;  // always enable root note
-			note_per_oct = 1;
-			int j = 1; 
-			for (int i = 1; i < 12; i++) {
-				if (input_scale[i] > 2.5) {
+			// generate scale[] with enabled notes only
+			note_per_oct = 0;
+			for (int i = 0, j = 0; i < 12; i++) {
+				if (input_scale[i] > 1.f) {
 					scale[j++] = i;
 					note_per_oct++;
 				}
 			}
-			scale[note_per_oct] = 12;  // for rounding
+			// zero notes enabled, equal to just root selected
+			if (note_per_oct == 0) {
+				note_per_oct = 1;
+				scale[0] = 0;
+			}
+			scale[note_per_oct] = scale[0] + 12;  // for rounding
 
 			// define lookup tables for rounding modes
-			for (int i = 0, j = 0; i < 12; i++) {
+			int j = (scale[0] == 0) ? 0 : -1;  // adjustment if 1st note not root
+			for (int i = 0; i < 12; i++) {
 				if (i >= scale[j + 1])
 					j++;
-				lower[i] = scale[j];
+				lower[i] = (j < 0) ? scale[note_per_oct - 1] - 12 : scale[j];
 				upper[i] = scale[j + 1];
 			}
 
@@ -234,11 +240,7 @@ struct QuantWidget : ModuleWidget {
 		setModule(module);
 		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Quant.svg")));
 
-		//addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
 		addChild(createWidget<ScrewSilver>(Vec(0, 0)));
-		//addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-		//addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-		//addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 1 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(14.45, 23.0)), module, Quant::SCALE_INPUT));
@@ -266,7 +268,7 @@ struct QuantWidget : ModuleWidget {
 		addParam(createParam<BlackButton>(mm2px(Vec(1.58, 89.0)), module, Quant::NOTE3_PARAM));
 		addParam(createParam<WhiteButton>(mm2px(Vec(1.58, 97.0)), module, Quant::NOTE2_PARAM));
 		addParam(createParam<BlackButton>(mm2px(Vec(1.58, 105.0)), module, Quant::NOTE1_PARAM));
-		addParam(createParam<WhiteButtonRoot>(mm2px(Vec(1.58, 113.0)), module, Quant::NOTE0_PARAM));
+		addParam(createParam<WhiteButton>(mm2px(Vec(1.58, 113.0)), module, Quant::NOTE0_PARAM));
 	}
 };
 

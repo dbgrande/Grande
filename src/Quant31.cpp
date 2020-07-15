@@ -56,7 +56,7 @@ struct Quant31 : Module {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(ROUNDING_PARAM, -1.0, 1.0, 0.0, "Rounding", "");
 		configParam(EQUI_PARAM, 0.0, 1.0, 0.0, "Equi-likely notes", "");
-		configParam(NOTE0_PARAM, 1.0, 1.0, 0.0, "Note0", "");  // Root note always selected
+		configParam(NOTE0_PARAM, 0.0, 1.0, 1.0, "Note0", "");  // Root note
 		configParam(NOTE1_PARAM, 0.0, 1.0, 0.0, "Note1", "");
 		configParam(NOTE2_PARAM, 0.0, 1.0, 0.0, "Note2", "");
 		configParam(NOTE3_PARAM, 0.0, 1.0, 0.0, "Note3", "");
@@ -148,22 +148,27 @@ struct Quant31 : Module {
 			input_scale[29] = std::round(params[NOTE29_PARAM].getValue());
 			input_scale[30] = std::round(params[NOTE30_PARAM].getValue());
 
-			scale[0] = 0;  // always enable root note
-			note_per_oct = 1;
-			int j = 1; 
-			for (int i = 1; i < 31; i++) {
-				if (input_scale[i] > 0.5) {
+			// generate scale[] with enabled notes only
+			note_per_oct = 0;
+			for (int i = 0, j = 0; i < 31; i++) {
+				if (input_scale[i] > 0.5f) {
 					scale[j++] = i;
 					note_per_oct++;
 				}
 			}
-			scale[note_per_oct] = 31;  // for rounding
+			// zero notes enabled, equal to just root selected
+			if (note_per_oct == 0) {
+				note_per_oct = 1;
+				scale[0] = 0;
+			}
+			scale[note_per_oct] = scale[0] + 31;  // for rounding
 
 			// define lookup tables for rounding modes
-			for (int i = 0, j = 0; i < 31; i++) {
+			int j = (scale[0] == 0) ? 0 : -1;  // adjustment if 1st note not root
+			for (int i = 0; i < 31; i++) {
 				if (i >= scale[j + 1])
 					j++;
-				lower[i] = scale[j];
+				lower[i] = (j < 0) ? scale[note_per_oct - 1] - 31 : scale[j];
 				upper[i] = scale[j + 1];
 			}
 
@@ -268,9 +273,7 @@ struct Quant31Widget : ModuleWidget {
 		setModule(module);
 		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/Quant31.svg")));
 
-		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-		// addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(24.0, 38.0)), module, Quant31::ROOT_INPUT));
@@ -315,7 +318,7 @@ struct Quant31Widget : ModuleWidget {
 		addParam(createParam<PentaButton>(mm2px(Vec(5.8, 110.677)), module, Quant31::NOTE3_PARAM));
 		addParam(createParam<PentaButton>(mm2px(Vec(5.8, 114.548)), module, Quant31::NOTE2_PARAM));
 		addParam(createParam<PentaButton>(mm2px(Vec(5.8, 118.419)), module, Quant31::NOTE1_PARAM));
-		addParam(createParam<PentaButtonRoot>(mm2px(Vec(5.8, 122.289)), module, Quant31::NOTE0_PARAM));
+		addParam(createParam<PentaButton>(mm2px(Vec(5.8, 122.289)), module, Quant31::NOTE0_PARAM));
 	}
 };
 
