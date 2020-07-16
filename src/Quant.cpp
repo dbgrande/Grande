@@ -84,8 +84,13 @@ struct Quant : Module {
 			if (schannels > 12)
 				schannels = 12;
 			if (schannels > 0) {  // read scale input
-				for (int c = 0; c < schannels; c++)
+				int c = 0;
+				// read active channels up to 12
+				for ( ; c < schannels; c++)
 					input_scale[c] = inputs[SCALE_INPUT].getVoltage(c);
+				// set inactive channels to 0
+				for ( ; c < 12; c++)
+					input_scale[c] = 0.f;
 				// display external scale on buttons
 				params[NOTE0_PARAM].setValue((input_scale[0] > 1.f) ? 1 : 0);
 				params[NOTE1_PARAM].setValue((input_scale[1] > 1.f) ? 1 : 0);
