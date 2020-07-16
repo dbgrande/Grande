@@ -23,6 +23,7 @@ Provides extra scales for Quant quantizer.
 
 ![Additional Scales](images/additional_scales.png "Additional Scales")
 
+
 Quant
 -----
 
@@ -56,6 +57,7 @@ For comparison, here is the Blues Scale using Equi-likely mode.
 
 **Note:** This equi-likely mode is best for random input frequencies. It may cause unexpected note shifting for inputs that are already more-or-less quantized.
 
+
 Quant31
 -------
 
@@ -71,16 +73,21 @@ Provides three sample-delay buffer chains giving one or two sample delays each.
 
 - Internally chained together to give up to six sample delays.
 
+
 CVInts (cvInt)
 -----------
 
 Provides 3 pairs of integer CVs from 0V to 10V (both + and –).
+
 
 CVBigInts (cvBI)
 -------------
 
 Provides 3 pairs of integer CVs from 0V to 32V (both + and –).
 
+***Exceeds normal voltage standards, so use with caution.***
+
+**New:** Added red underline to distinguish this plugin from CVInt.
 
 License
 -------
