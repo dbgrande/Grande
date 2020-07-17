@@ -74,20 +74,24 @@ Provides three sample-delay buffer chains giving one or two sample delays each.
 - Internally chained together to give up to six sample delays.
 
 
-CVInts (cvInt)
+CVInts (Ints)
 -----------
 
 Provides 3 pairs of integer CVs from 0V to 10V (both + and –).
 
+**New:** Shortened name displays on panel.
 
-CVBigInts (cvBI)
+
+CVBigInts (BI)
 -------------
 
 Provides 3 pairs of integer CVs from 0V to 32V (both + and –).
 
-***Exceeds normal voltage standards, so use with caution.***
+***Exceeds normal voltage standards, so use with caution. ;-)***
 
-**New:** Added red underline to distinguish this plugin from CVInt.
+**New:** Added red underline to distinguish this plugin from CVInts.
+
+**New:** Shortened name displayed on panel.
 
 License
 -------
