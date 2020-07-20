@@ -12,6 +12,7 @@ void init(Plugin* p) {
 	p->addModel(modelBlank1HP);
 	p->addModel(modelCVBigInts);
 	p->addModel(modelCVInts);
+	p->addModel(modelFrequency);
 	p->addModel(modelQuant);
 	p->addModel(modelQuant31);
 	p->addModel(modelSampleDelays);

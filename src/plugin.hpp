@@ -13,6 +13,7 @@ extern Plugin* pluginInstance;
 extern Model* modelBlank1HP;
 extern Model* modelCVBigInts;
 extern Model* modelCVInts;
+extern Model* modelFrequency;
 extern Model* modelQuant;
 extern Model* modelQuant31;
 extern Model* modelSampleDelays;

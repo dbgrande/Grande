@@ -3,7 +3,7 @@ Grande Plugins for VCV Rack 1.0
 
 By David Grande
 
-![Grande Plugins](images/grande_plugins.png "Plugins")
+![Grande Plugins](images/grande_plugins.png "Available Plugins")
 
 
 Blank1HP
@@ -92,6 +92,20 @@ Provides 3 pairs of integer CVs from 0V to 32V (both + and –).
 **New:** Added red underline to distinguish this plugin from CVInts.
 
 **New:** Shortened name displayed on panel.
+
+
+Frequency (Freq)
+---------------
+
+Converts a frequency to V/Oct.
+
+- Thresh sets input threshold voltage (–10V to 10V).
+
+- Smooth sets number of measurements to average together (from 1 to 16).
+
+To use this plugin as a tuner, combine it with a voltmeter that displays voltages as notes—preferably one that goes from –50¢ to +50¢, so the display doesn't bounce around too wildly.
+
+
 
 License
 -------

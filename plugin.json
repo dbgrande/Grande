@@ -38,6 +38,14 @@
       ]
     },
     {
+      "slug": "Frequency",
+      "name": "Frequency",
+      "description": "Frequency to V/Oct.",
+      "tags": [
+        "Tuner"
+      ]
+    },
+    {
       "slug": "Quant",
       "name": "Quant",
       "description": "Quantizer with equi-likely notes mode.",
