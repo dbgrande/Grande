@@ -1,9 +1,9 @@
-Grande Plugins for VCV Rack 1.0
+Grande Modules for VCV Rack 1.0
 ===============================
 
 By David Grande
 
-![Grande Plugins](images/grande_plugins.png "Available Plugins")
+![Grande Plugins](images/grande_plugins.png "Available Modules")
 
 
 Blank1HP
@@ -12,16 +12,17 @@ Blank1HP
 Blank panel.
 
 
+
 Scale
 -----
 
 Provides extra scales for Quant quantizer.
 
-- **New:** Root note can now also be disabled.
 - Use a polyphonic switch and plug into Scale input of Quant.
-- Sends 12 control signals using polyphonic cable.
+- Sends 12 control signals using polyphonic cable (0V or 10V).
 
 ![Additional Scales](images/additional_scales.png "Additional Scales")
+
 
 
 Quant
@@ -29,15 +30,14 @@ Quant
 
 12-TET Quantizer with Equi-likely mode.
 
-- **New:** Root note can now also be disable. If no notes are selected, it defaults to just the root note.
-- Scale (input): Use Scale plugins and polyphonic switch to allow selecting different scales.
+- Scale (input): Use Scale modules and polyphonic switch to allow selecting different scales.
 - Root (input): Defines root note of scale (1V/Oct, polyphonic)
 - Rounding mode (switch): –1 (down) = round down, 0 (center) = round nearest, 1 (up) = round up
 - Equi-likely mode (switch): 0 (down) = off, 1 (up) = on
 - In (input): CV input (1V/Oct, polyphonic)
 - Out (output): Quantized CV output (1V/Oct, polyphonic)
 - Trigger (output): Trigger whenever note changes (polyphonic)
-- Twelve buttons: Set current scale, or display externally defined scale. Root on bottom. Defaults to major scale.
+- Twelve buttons: Set current scale, or display externally defined scale. Root on bottom. Defaults to major scale. If no notes are selected, defaults to just the root note.
 
 
 **Blues Scale using Normal quantization and rounding down:**
@@ -58,12 +58,14 @@ For comparison, here is the Blues Scale using Equi-likely mode.
 **Note:** This equi-likely mode is best for random input frequencies. It may cause unexpected note shifting for inputs that are already more-or-less quantized.
 
 
+
 Quant31
 -------
 
 31-TET Quantizer with Equi-likely mode.
 
 - Same features as Quant, except no scale input, and 31 buttons.
+
 
 
 SampleDelays (SD)
@@ -74,12 +76,12 @@ Provides three sample-delay buffer chains giving one or two sample delays each.
 - Internally chained together to give up to six sample delays.
 
 
+
 CVInts (Ints)
 -----------
 
 Provides 3 pairs of integer CVs from 0V to 10V (both + and –).
 
-**New:** Shortened name displays on panel.
 
 
 CVBigInts (BI)
@@ -89,9 +91,6 @@ Provides 3 pairs of integer CVs from 0V to 32V (both + and –).
 
 ***Exceeds normal voltage standards, so use with caution. ;-)***
 
-**New:** Added red underline to distinguish this plugin from CVInts.
-
-**New:** Shortened name displayed on panel.
 
 
 Frequency (Freq)
@@ -103,7 +102,7 @@ Converts a frequency to V/Oct.
 
 - Smooth sets number of measurements to average together (from 1 to 16).
 
-To use this plugin as a tuner, combine it with a voltmeter that displays voltages as notes—preferably one that goes from –50¢ to +50¢, so the display doesn't bounce around too wildly.
+To use this module as a tuner, combine it with a voltmeter that displays voltages as notes—preferably one that goes from –50¢ to +50¢, so the display doesn't bounce around too wildly.
 
 
 
