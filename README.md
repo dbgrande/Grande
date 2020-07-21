@@ -31,7 +31,7 @@ Quant
 12-TET Quantizer with Equi-likely mode.
 
 - Scale (input): Use Scale modules and polyphonic switch to allow selecting different scales.
-- Root (input): Defines root note of scale (1V/Oct, polyphonic)
+- Root (input): Defines root note of scale (1V/Oct, polyphonic) **Now quantized.**
 - Rounding mode (switch): –1 (down) = round down, 0 (center) = round nearest, 1 (up) = round up
 - Equi-likely mode (switch): 0 (down) = off, 1 (up) = on
 - In (input): CV input (1V/Oct, polyphonic)

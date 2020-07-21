@@ -172,19 +172,26 @@ struct Quant31 : Module {
 				upper[i] = scale[j + 1];
 			}
 
-			// transpose
+			// transpose to specified root
 			int channels = inputs[ROOT_INPUT].getChannels();
 			if (channels == 0)  // nothing plugged in, reset all channels to 0
 				for (int c = 0; c < 16; c++)
 					transpose[c] = 0.f;
 			else if (channels == 1) { // mono tranpose, apply to all channels
-				float t = inputs[ROOT_INPUT].getVoltage(0);
+				float fracT = fmodf(inputs[ROOT_INPUT].getVoltage(0), 1.f);
+				if (fracT < 0.f ) // round to -∞
+					fracT = (abs(fracT) < 1e-7) ? 0.f : fracT + 1.f;
+				float qT = floor(31 * fracT + 0.5f) / 31.f; // quantize to chromatic scale
 				for (int c = 0; c < 16; c++)
-					transpose[c] = t;
+					transpose[c] = qT;
 			}
 			else { // full poly, separate transpose per channel
-				for (int c = 0; c < channels; c++)
-					transpose[c] = inputs[ROOT_INPUT].getVoltage(c);
+				for (int c = 0; c < channels; c++) {
+					float fracT = fmodf(inputs[ROOT_INPUT].getVoltage(c), 1.f);
+					if (fracT < 0.f ) // round to -∞
+						fracT = (abs(fracT) < 1e-7) ? 0.f : fracT + 1.f;
+					transpose[c] = floor(31 * fracT + 0.5f) / 31.f; // quantize to chromatic scale
+				}
 				for (int c = channels; c < 16; c++)  // zero out remaining
 					transpose[c] = 0.f;
 			}
@@ -195,14 +202,21 @@ struct Quant31 : Module {
 		// quantize cv input (polyphonic)
 		int channels = inputs[CV_IN_INPUT].getChannels();
 		for (int c = 0; c < channels; c++) {
-			// offset by +10V to avoid issues with going negative.
-			float rawnote = inputs[CV_IN_INPUT].getVoltage(c) + 10 - transpose[c];
-			float intPart, fracPart;
+			float intPart;
+			float fracPart = modff(inputs[CV_IN_INPUT].getVoltage(c) - transpose[c], &intPart);
+			if (intPart < 0.f || fracPart < 0.f) { // round to -∞
+				if (abs(fracPart) < 1e-7)
+					fracPart = 0.f;
+				else {
+					fracPart += 1.f;
+					intPart -= 1.f;
+				}
+			}
 			int note;
 			if (equi_likely == 0) {  // normal mode
 				// quantize by half step, to match to VCV QNT and ML Quantum
+				fracPart = 31.f * fracPart;
 				if (rounding_mode == -1) { // round down
-					fracPart = 31 * modff(rawnote, &intPart);
 					int n = floor(fracPart);
 					if (fracPart > upper[n] - 0.5)
 						note = upper[n];
@@ -210,7 +224,6 @@ struct Quant31 : Module {
 						note = lower[n];
 				}
 				else if (rounding_mode == 1) { // round up
-					fracPart = 31 * modff(rawnote, &intPart);
 					int n = floor(fracPart);
 					if (fracPart > lower[n] + 0.5)
 						note = upper[n];
@@ -218,7 +231,6 @@ struct Quant31 : Module {
 						note = lower[n];
 				}
 				else {  // round nearest (down)
-					fracPart = 31 * modff(rawnote, &intPart);
 					int n = floor(fracPart);
 					float temp = (lower[n] + upper[n]) / 2.f;
 					float threshold;
@@ -235,15 +247,12 @@ struct Quant31 : Module {
 			} else {  // equi-likely mode
 				// in this case, can't serialize quantizers, so don't need window
 				if (rounding_mode == -1) { // round down
-					fracPart = modff(rawnote, &intPart);
 					note = scale[(int)(floor(note_per_oct * fracPart))];
 				}
 				else if (rounding_mode == 1) { // round up
-					fracPart = modff(rawnote, &intPart);
 					note = scale[(int)(ceil(note_per_oct * fracPart))];
 				}
 				else {  // round nearest (down)
-					fracPart = modff(rawnote, &intPart);
 					note = scale[(int)(floor(note_per_oct * fracPart + 0.5f))];
 				}
 			}
@@ -251,8 +260,7 @@ struct Quant31 : Module {
 				intPart++;
 				note = 0;
 			}
-			// output (offset back by -10V)
-			cv_out[c] = intPart - 10 + (note / 31.f) + transpose[c];
+			cv_out[c] = intPart + (note / 31.f) + transpose[c];
 			outputs[CV_OUT_OUTPUT].setVoltage(cv_out[c], c);
 			// generate trigger pulse on note change
 			if (cv_out[c] != last_cv_out[c]) {
