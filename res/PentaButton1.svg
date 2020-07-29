@@ -7,34 +7,34 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="PentaButton1.svg"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   id="svg8"
-   version="1.1"
-   viewBox="0 0 7 3.5"
+   width="7mm"
    height="3.5mm"
-   width="7mm">
+   viewBox="0 0 7 3.5"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="PentaButton1.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
-     inkscape:window-maximized="0"
-     inkscape:window-y="83"
-     inkscape:window-x="1460"
-     inkscape:window-height="1166"
-     inkscape:window-width="1533"
-     showgrid="false"
-     inkscape:document-rotation="0"
-     inkscape:current-layer="layer1"
-     inkscape:document-units="mm"
-     inkscape:cy="8.2322331"
-     inkscape:cx="10.286255"
-     inkscape:zoom="22.4"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     borderopacity="1.0"
-     bordercolor="#666666"
+     id="base"
      pagecolor="#ffffff"
-     id="base" />
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="21.550195"
+     inkscape:cx="-1.0593502"
+     inkscape:cy="8.2322331"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1533"
+     inkscape:window-height="1166"
+     inkscape:window-x="1372"
+     inkscape:window-y="266"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -43,18 +43,18 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
+     inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     inkscape:label="Layer 1">
+     id="layer1">
     <path
-       id="path1302"
-       style="display:inline;fill:#ff0000;fill-opacity:1;stroke:#000000;stroke-width:0.15;stop-color:#000000"
+       sodipodi:nodetypes="cccccc"
        d="m 2,0.075 h 4.9248788 v 3.35 H 2 L 0.11327807,1.7499999 Z"
-       sodipodi:nodetypes="cccccc" />
+       style="display:inline;fill:#ed2c24;fill-opacity:1;stroke:#000000;stroke-width:0.15;stop-color:#000000"
+       id="path1302" />
   </g>
 </svg>
