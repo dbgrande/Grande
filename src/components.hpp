@@ -52,6 +52,36 @@ struct PentaButton : SvgSwitch {
   }
 };
 
+struct RectButton : SvgSwitch {
+  RectButton() {
+    momentary = false;
+    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/RectButton0.svg")));
+    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/RectButton1.svg")));
+    fb->removeChild(shadow);
+    delete shadow;
+  }
+};
+
+struct ConfigButton : SvgSwitch {
+  ConfigButton() {
+    momentary = true;
+    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/ConfigButton0.svg")));
+    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/ConfigButton1.svg")));
+    fb->removeChild(shadow);
+    delete shadow;
+  }
+};
+
+struct TL1105Momentary : SvgSwitch {
+  TL1105Momentary() {
+    momentary = true;
+    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TL1105_0.svg")));
+    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TL1105_1.svg")));
+    fb->removeChild(shadow);
+    delete shadow;
+  }
+};
+
 struct RoundSmallRotarySwitch : RoundSmallBlackKnob {
 	RoundSmallRotarySwitch() {
 		//minAngle = -0.83*M_PI;
@@ -69,6 +99,48 @@ struct RoundSmallRotarySwitch : RoundSmallBlackKnob {
 	// override the base randomizer as it sets switches to invalid values.
 	void randomize() override {
 		RoundSmallBlackKnob::randomize();
+		paramQuantity->setValue(roundf(paramQuantity->getValue()));
+	}
+};
+
+struct RoundBlackRotarySwitch : RoundBlackKnob {
+	RoundBlackRotarySwitch() {
+		//minAngle = -0.83*M_PI;
+		//maxAngle = 0.83*M_PI;
+		snap = true;
+		smooth = false;
+	}
+
+	// handle the manually entered values
+	void onChange(const event::Change &e) override {
+		RoundBlackKnob::onChange(e);
+		paramQuantity->setValue(roundf(paramQuantity->getValue()));
+	}
+
+	// override the base randomizer as it sets switches to invalid values.
+	void randomize() override {
+		RoundBlackKnob::randomize();
+		paramQuantity->setValue(roundf(paramQuantity->getValue()));
+	}
+};
+
+struct RoundLargeRotarySwitch : RoundLargeBlackKnob {
+	RoundLargeRotarySwitch() {
+		//minAngle = -0.83*M_PI;
+		//maxAngle = 0.83*M_PI;
+		snap = true;
+		smooth = false;
+	}
+
+	// handle the manually entered values
+	void onChange(const event::Change &e) override {
+		RoundLargeBlackKnob::onChange(e);
+		paramQuantity->setValue(roundf(paramQuantity->getValue()));
+	}
+
+	// override the base randomizer as it sets switches to invalid values.
+	void randomize() override {
+		RoundLargeBlackKnob::randomize();
 		paramQuantity->setValue(roundf(paramQuantity->getValue()));
 	}
 };

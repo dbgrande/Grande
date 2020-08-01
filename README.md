@@ -1,5 +1,10 @@
 Grande Modules for VCV Rack 1.0
 ===============================
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+***See below for new Microtonal Collection!***
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 By David Grande
 
@@ -59,15 +64,6 @@ For comparison, here is the Blues Scale using Equi-likely mode.
 
 
 
-Quant31
--------
-
-31-TET Quantizer with Equi-likely mode.
-
-- Same features as Quant, except no scale input, and 31 buttons.
-
-
-
 SampleDelays (SD)
 -----------------
 
@@ -102,7 +98,80 @@ Converts a frequency to V/Oct.
 
 - Smooth sets number of measurements to average together (from 1 to 16).
 
-To use this module as a tuner, combine it with a voltmeter that displays voltages as notes—preferably one that goes from –50¢ to +50¢, so the display doesn't bounce around too wildly.
+To use this module as a tuner, combine it with a voltmeter that displays voltages as notes—preferably one that goes from –50 to +50 cents, so the display doesn't bounce around too wildly.
+
+
+
+*New:* Microtonal Collection
+============================
+
+In addition to the previously existing Quant31, I have now added three other microtonal modules.
+
+![Grande Microtonal Modules](images/microtonal_collection.png "Microtonal Collection")
+
+
+
+Quant31
+-------
+
+A 31-TET microtonal quantizer with Equi-likely mode.
+
+- Same features as Quant (above), except no external scale input, and 31 buttons.
+
+
+
+QuantMT
+-------
+
+An equal temperament microtonal quantizer where the valid notes are defined directly.
+
+- Notes/Oct knob defines temperament, from 1-TET through 31-TET (default 12-TET).
+
+- The note buttons between the two blue lights select valid notes. Notes outside this range are ignored.
+
+- The two small unmarked buttons at the top of the note selection column are "Set All" and "Clear All".
+
+- Quantizer features are the same as Quant (above), minus the external scale input. 
+
+
+
+QuantMTIntervals
+----------------
+
+An equal temperament microtonal quantizer where the valid notes are defined indirectly by pitch intervals.
+
+- Notes/Oct knob defines temperament, from 1-TET through 31-TET (default 12-TET).
+
+- Tolerance knob defines required accuracy for matching, from 0 to 50 cents (default 20 cents).
+
+- The interval buttons select desired pitch intervals, but they need to be mapped to notes in the selected temperament. Valid notes are those that match selected intervals within the specified tolerance. These are indicated by a blue light, with the brightness indicating how close the match is.
+
+- Set All - enables all interval buttons.
+
+- Clear All - disables all interval buttons, except 1/1 unison.
+
+- Show Valid - Turns on blue lights of intervals nearest to valid matching notes (based on tolerance), including disabled buttons.
+
+- Clear Invalid - Deselects all intervals that don't have a light showing.
+
+- Quantizer features are the same as Quant (above), minus the external scale input. 
+
+*Note that there is currently room for adding three more interval buttons—submit your favorite interval.*
+
+
+
+NoteMT
+------
+
+An equal temperament microtonal note generator and display preprocessor.
+
+- Notes/Oct knob defines temperament, from 1-TET through 31-TET (default 12-TET).
+
+- Octave and Note knobs set voltage of V/Oct output based current temperament, with Note knob clamped to Notes/Oct – 1.
+
+- Octave and Note outputs convert V/Oct-In voltage (or knobs if input unconnected) into a pair of integer voltages. These can be displayed on a voltmeter, like the one from ML Modules.
+
+- A blue light at the top turns on when the Note output values are integers, indicating that the Notes/Oct setting is likely matching the V/Oct-In source. However, this is not guaranteed.
 
 
 

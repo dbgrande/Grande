@@ -46,6 +46,14 @@
       ]
     },
     {
+      "slug": "NoteMT",
+      "name": "NoteMT",
+      "description": "Microtonal note utility.",
+      "tags": [
+        "Utility"
+      ]
+    },
+    {
       "slug": "Quant",
       "name": "Quant",
       "description": "Quantizer with equi-likely notes mode.",
@@ -57,7 +65,25 @@
     {
       "slug": "Quant31",
       "name": "Quant31",
-      "description": "31-TET Quantizer with equi-likely notes mode.",
+      "description": "31-ET Quantizer with equi-likely notes mode.",
+      "tags": [
+        "Quantizer",
+        "Polyphonic"
+      ]
+    },
+    {
+      "slug": "QuantMT",
+      "name": "QuantMT",
+      "description": "Microtonal quantizer.",
+      "tags": [
+        "Quantizer",
+        "Polyphonic"
+      ]
+    },
+    {
+      "slug": "QuantMTIntervals",
+      "name": "QuantMT Intervals",
+      "description": "Microtonal quantizer based on intervals.",
       "tags": [
         "Quantizer",
         "Polyphonic"

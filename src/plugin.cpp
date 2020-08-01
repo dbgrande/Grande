@@ -13,8 +13,11 @@ void init(Plugin* p) {
 	p->addModel(modelCVBigInts);
 	p->addModel(modelCVInts);
 	p->addModel(modelFrequency);
+	p->addModel(modelNoteMT);
 	p->addModel(modelQuant);
 	p->addModel(modelQuant31);
+	p->addModel(modelQuantMT);
+	p->addModel(modelQuantMTIntervals);
 	p->addModel(modelSampleDelays);
 	p->addModel(modelScale);
 
