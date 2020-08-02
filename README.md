@@ -105,7 +105,7 @@ To use this module as a tuner, combine it with a voltmeter that displays voltage
 *New:* Microtonal Collection
 ============================
 
-In addition to the previously existing Quant31, I have now added three other microtonal modules.
+In addition to the previously existing Quant31, I have now added four other microtonal modules.
 
 ![Grande Microtonal Modules](images/microtonal_collection.png "Microtonal Collection")
 
@@ -157,6 +157,15 @@ An equal temperament microtonal quantizer where the valid notes are defined indi
 - Quantizer features are the same as Quant (above), minus the external scale input. 
 
 *Note that there is currently room for adding three more interval buttons—submit your favorite interval.*
+
+
+
+QuantMTInt11 (QuantMTIntervals 11)
+----------------------------------
+
+A variation of QuantMTIntervals (above), except that it's pitch intervals are based on the 11-Limit Tonality Diamond. However, I included three additional intervals: 16:15 (minor 2nd), 15:8 (major 7th), and 27:14 (Septimal major 7th).
+
+[Link to Wikipedia article on Tonality Diamonds](https://en.wikipedia.org/wiki/Tonality_diamond)
 
 
 
