@@ -12,6 +12,7 @@ struct QuantMTInt11 : Module {
 		CLEAR_ALL_PARAM,
 		SEL_ENABLED_PARAM,
 		SHOW_ALLOWED_PARAM,
+		SHOW_NOTES_PARAM,
 		NUM_PARAMS
 	};
 	enum InputIds {
@@ -71,6 +72,7 @@ struct QuantMTInt11 : Module {
 		configParam(CLEAR_ALL_PARAM, 0.0, 1.0, 0.0, "Clear All", "");
 		configParam(SHOW_ALLOWED_PARAM, 0.0, 1.0, 0.0, "Show Valid", "");
 		configParam(SEL_ENABLED_PARAM, 0.0, 1.0, 0.0, "Clear Invalid", "");
+		configParam(SHOW_NOTES_PARAM, 0.0, 1.0, 0.0, "Show Notes", "");
 	}
 
 	dsp::PulseGenerator pulseGenerators[16];
@@ -132,6 +134,7 @@ struct QuantMTInt11 : Module {
 			int clear_all = clamp((int)(params[CLEAR_ALL_PARAM].getValue()), 0, 1);
 			int sel_enabled = clamp((int)(params[SEL_ENABLED_PARAM].getValue()), 0, 1);
 			int show_allowed = clamp((int)(params[SHOW_ALLOWED_PARAM].getValue()), 0, 1);
+			int show_notes = clamp((int)(params[SHOW_NOTES_PARAM].getValue()), 0, 1);
 
 			// initialize
 			int note_used[32];  // include octave
@@ -230,6 +233,14 @@ struct QuantMTInt11 : Module {
 					else
 						lights[INTERVAL_LIGHTS + i].setBrightness(0.f);
 				}
+			}
+			// show actual notes selected
+			else if (show_notes == 1) {
+				int n;
+				for (n = 0; n < equal_temp; n++)
+					lights[INTERVAL_LIGHTS + n].setBrightness((note_used[n] >= 0) ? 1 : 0);
+				for ( ; n < 32; n++)
+					lights[INTERVAL_LIGHTS + n].setBrightness(0);
 			}
 			else {
 				// show normal lights, which give error for selected intervals
@@ -382,17 +393,19 @@ struct QuantMTInt11Widget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(20.93, 19.17)), module, QuantMTInt11::SEL_ALL_PARAM));
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(32.43, 19.17)), module, QuantMTInt11::CLEAR_ALL_PARAM));
+		addParam(createParam<TL1105Momentary>(mm2px(Vec(20.93, 18.17)), module, QuantMTInt11::SEL_ALL_PARAM));
+		addParam(createParam<TL1105Momentary>(mm2px(Vec(32.43, 18.17)), module, QuantMTInt11::CLEAR_ALL_PARAM));
 
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(20.93, 30.67)), module, QuantMTInt11::SHOW_ALLOWED_PARAM));
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(32.43, 30.67)), module, QuantMTInt11::SEL_ENABLED_PARAM));
+		addParam(createParam<TL1105Momentary>(mm2px(Vec(20.93, 29.67)), module, QuantMTInt11::SHOW_ALLOWED_PARAM));
+		addParam(createParam<TL1105Momentary>(mm2px(Vec(32.43, 29.67)), module, QuantMTInt11::SEL_ENABLED_PARAM));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(29.39, 47.00)), module, QuantMTInt11::TOLERANCE_PARAM));
-		addParam(createParamCentered<RoundLargeRotarySwitch>(mm2px(Vec(29.39, 65.00)), module, QuantMTInt11::SIZE_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(29.39, 45.00)), module, QuantMTInt11::TOLERANCE_PARAM));
+		addParam(createParamCentered<RoundLargeRotarySwitch>(mm2px(Vec(29.39, 63.00)), module, QuantMTInt11::SIZE_PARAM));
 
-		addParam(createParam<CKSSThree>(mm2px(Vec(21.39, 78.50)), module, QuantMTInt11::ROUNDING_PARAM));
-		addParam(createParam<CKSS>(mm2px(Vec(32.89, 80.00)), module, QuantMTInt11::EQUI_PARAM));
+		addParam(createParam<TL1105Momentary>(mm2px(Vec(17.30, 70.50)), module, QuantMTInt11::SHOW_NOTES_PARAM));
+
+		addParam(createParam<CKSSThree>(mm2px(Vec(21.39, 80.00)), module, QuantMTInt11::ROUNDING_PARAM));
+		addParam(createParam<CKSS>(mm2px(Vec(32.89, 81.00)), module, QuantMTInt11::EQUI_PARAM));
 
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(23.64, 100.0)), module, QuantMTInt11::CV_IN_INPUT));
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(35.14, 100.0)), module, QuantMTInt11::CV_OUT_OUTPUT));

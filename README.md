@@ -165,6 +165,10 @@ QuantMTInt11 (QuantMTIntervals 11)
 
 A variation of QuantMTIntervals (above), except that it's pitch intervals are based on the 11-Limit Tonality Diamond. However, I included three additional intervals: 16:15 (minor 2nd), 15:8 (major 7th), and 27:14 (Septimal major 7th).
 
+**New:** Show Notes button has been added to show the actual notes being used. Useful for understanding what this quantizer is doing, and allows converting its results to another quantizer.
+
+*This feature will be added to QuantMTIntervals once the number of intervals in that module have been increased to 31.*
+
 [Link to Wikipedia article on Tonality Diamonds](https://en.wikipedia.org/wiki/Tonality_diamond)
 
 
