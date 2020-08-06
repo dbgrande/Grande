@@ -1,7 +1,7 @@
 #include "plugin.hpp"
 
 
-struct QuantMTInt11 : Module {
+struct QuantIntervals : Module {
 	enum ParamIds {
 		ROUNDING_PARAM,
 		EQUI_PARAM,
@@ -30,7 +30,7 @@ struct QuantMTInt11 : Module {
 		NUM_LIGHTS
 	};
 
-	QuantMTInt11() {
+	QuantIntervals() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(ROUNDING_PARAM, -1.0, 1.0, 0.0, "Rounding", "");
 		configParam(EQUI_PARAM, 0.0, 1.0, 0.0, "Equi-likely notes", "");
@@ -384,102 +384,102 @@ struct QuantMTInt11 : Module {
 };
 
 
-struct QuantMTInt11Widget : ModuleWidget {
-	QuantMTInt11Widget(QuantMTInt11* module) {
+struct QuantIntervalsWidget : ModuleWidget {
+	QuantIntervalsWidget(QuantIntervals* module) {
 		setModule(module);
-		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/QuantMTInt11.svg")));
+		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/QuantIntervals.svg")));
 
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(20.93, 18.17)), module, QuantMTInt11::SEL_ALL_PARAM));
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(32.43, 18.17)), module, QuantMTInt11::CLEAR_ALL_PARAM));
+		addParam(createParam<TL1105Momentary>(mm2px(Vec(20.93, 18.17)), module, QuantIntervals::SEL_ALL_PARAM));
+		addParam(createParam<TL1105Momentary>(mm2px(Vec(32.43, 18.17)), module, QuantIntervals::CLEAR_ALL_PARAM));
 
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(20.93, 29.67)), module, QuantMTInt11::SHOW_ALLOWED_PARAM));
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(32.43, 29.67)), module, QuantMTInt11::SEL_ENABLED_PARAM));
+		addParam(createParam<TL1105Momentary>(mm2px(Vec(20.93, 29.67)), module, QuantIntervals::SHOW_ALLOWED_PARAM));
+		addParam(createParam<TL1105Momentary>(mm2px(Vec(32.43, 29.67)), module, QuantIntervals::SEL_ENABLED_PARAM));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(29.39, 45.00)), module, QuantMTInt11::TOLERANCE_PARAM));
-		addParam(createParamCentered<RoundLargeRotarySwitch>(mm2px(Vec(29.39, 63.00)), module, QuantMTInt11::SIZE_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(29.39, 45.00)), module, QuantIntervals::TOLERANCE_PARAM));
+		addParam(createParamCentered<RoundLargeRotarySwitch>(mm2px(Vec(29.39, 63.00)), module, QuantIntervals::SIZE_PARAM));
 
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(17.30, 70.50)), module, QuantMTInt11::SHOW_NOTES_PARAM));
+		addParam(createParam<TL1105Momentary>(mm2px(Vec(17.30, 70.50)), module, QuantIntervals::SHOW_NOTES_PARAM));
 
-		addParam(createParam<CKSSThree>(mm2px(Vec(21.39, 80.00)), module, QuantMTInt11::ROUNDING_PARAM));
-		addParam(createParam<CKSS>(mm2px(Vec(32.89, 81.00)), module, QuantMTInt11::EQUI_PARAM));
+		addParam(createParam<CKSSThree>(mm2px(Vec(21.39, 80.00)), module, QuantIntervals::ROUNDING_PARAM));
+		addParam(createParam<CKSS>(mm2px(Vec(32.89, 81.00)), module, QuantIntervals::EQUI_PARAM));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(23.64, 100.0)), module, QuantMTInt11::CV_IN_INPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(35.14, 100.0)), module, QuantMTInt11::CV_OUT_OUTPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(23.64, 100.0)), module, QuantIntervals::CV_IN_INPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(35.14, 100.0)), module, QuantIntervals::CV_OUT_OUTPUT));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(23.64, 115.0)), module, QuantMTInt11::ROOT_INPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(35.14, 115.0)), module, QuantMTInt11::TRIGGER_OUTPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(23.64, 115.0)), module, QuantIntervals::ROOT_INPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(35.14, 115.0)), module, QuantIntervals::TRIGGER_OUTPUT));
 
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 2.289)), module, QuantMTInt11::INTERVAL_PARAMS + 31));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 6.160)), module, QuantMTInt11::INTERVAL_PARAMS + 30));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 10.031)), module, QuantMTInt11::INTERVAL_PARAMS + 29));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 13.902)), module, QuantMTInt11::INTERVAL_PARAMS + 28));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 17.773)), module, QuantMTInt11::INTERVAL_PARAMS + 27));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 21.644)), module, QuantMTInt11::INTERVAL_PARAMS + 26));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 25.515)), module, QuantMTInt11::INTERVAL_PARAMS + 25));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 29.386)), module, QuantMTInt11::INTERVAL_PARAMS + 24));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 33.257)), module, QuantMTInt11::INTERVAL_PARAMS + 23));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 37.128)), module, QuantMTInt11::INTERVAL_PARAMS + 22));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 40.999)), module, QuantMTInt11::INTERVAL_PARAMS + 21));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 44.870)), module, QuantMTInt11::INTERVAL_PARAMS + 20));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 48.741)), module, QuantMTInt11::INTERVAL_PARAMS + 19));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 52.612)), module, QuantMTInt11::INTERVAL_PARAMS + 18));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 56.483)), module, QuantMTInt11::INTERVAL_PARAMS + 17));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 60.354)), module, QuantMTInt11::INTERVAL_PARAMS + 16));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 64.225)), module, QuantMTInt11::INTERVAL_PARAMS + 15));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 68.096)), module, QuantMTInt11::INTERVAL_PARAMS + 14));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 71.967)), module, QuantMTInt11::INTERVAL_PARAMS + 13));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 75.838)), module, QuantMTInt11::INTERVAL_PARAMS + 12));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 79.709)), module, QuantMTInt11::INTERVAL_PARAMS + 11));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 83.580)), module, QuantMTInt11::INTERVAL_PARAMS + 10));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 87.451)), module, QuantMTInt11::INTERVAL_PARAMS + 9));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 91.322)), module, QuantMTInt11::INTERVAL_PARAMS + 8));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 95.193)), module, QuantMTInt11::INTERVAL_PARAMS + 7));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 99.064)), module, QuantMTInt11::INTERVAL_PARAMS + 6));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 102.935)), module, QuantMTInt11::INTERVAL_PARAMS + 5));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 106.806)), module, QuantMTInt11::INTERVAL_PARAMS + 4));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 110.677)), module, QuantMTInt11::INTERVAL_PARAMS + 3));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 114.548)), module, QuantMTInt11::INTERVAL_PARAMS + 2));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 118.419)), module, QuantMTInt11::INTERVAL_PARAMS + 1));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 122.289)), module, QuantMTInt11::INTERVAL_PARAMS + 0));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 2.289)), module, QuantIntervals::INTERVAL_PARAMS + 31));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 6.160)), module, QuantIntervals::INTERVAL_PARAMS + 30));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 10.031)), module, QuantIntervals::INTERVAL_PARAMS + 29));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 13.902)), module, QuantIntervals::INTERVAL_PARAMS + 28));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 17.773)), module, QuantIntervals::INTERVAL_PARAMS + 27));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 21.644)), module, QuantIntervals::INTERVAL_PARAMS + 26));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 25.515)), module, QuantIntervals::INTERVAL_PARAMS + 25));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 29.386)), module, QuantIntervals::INTERVAL_PARAMS + 24));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 33.257)), module, QuantIntervals::INTERVAL_PARAMS + 23));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 37.128)), module, QuantIntervals::INTERVAL_PARAMS + 22));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 40.999)), module, QuantIntervals::INTERVAL_PARAMS + 21));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 44.870)), module, QuantIntervals::INTERVAL_PARAMS + 20));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 48.741)), module, QuantIntervals::INTERVAL_PARAMS + 19));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 52.612)), module, QuantIntervals::INTERVAL_PARAMS + 18));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 56.483)), module, QuantIntervals::INTERVAL_PARAMS + 17));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 60.354)), module, QuantIntervals::INTERVAL_PARAMS + 16));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 64.225)), module, QuantIntervals::INTERVAL_PARAMS + 15));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 68.096)), module, QuantIntervals::INTERVAL_PARAMS + 14));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 71.967)), module, QuantIntervals::INTERVAL_PARAMS + 13));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 75.838)), module, QuantIntervals::INTERVAL_PARAMS + 12));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 79.709)), module, QuantIntervals::INTERVAL_PARAMS + 11));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 83.580)), module, QuantIntervals::INTERVAL_PARAMS + 10));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 87.451)), module, QuantIntervals::INTERVAL_PARAMS + 9));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 91.322)), module, QuantIntervals::INTERVAL_PARAMS + 8));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 95.193)), module, QuantIntervals::INTERVAL_PARAMS + 7));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 99.064)), module, QuantIntervals::INTERVAL_PARAMS + 6));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 102.935)), module, QuantIntervals::INTERVAL_PARAMS + 5));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 106.806)), module, QuantIntervals::INTERVAL_PARAMS + 4));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 110.677)), module, QuantIntervals::INTERVAL_PARAMS + 3));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 114.548)), module, QuantIntervals::INTERVAL_PARAMS + 2));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 118.419)), module, QuantIntervals::INTERVAL_PARAMS + 1));
+		addParam(createParam<RectButton>(mm2px(Vec(4.00, 122.289)), module, QuantIntervals::INTERVAL_PARAMS + 0));
 
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 2.289+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 31));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 6.160+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 30));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 10.031+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 29));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 13.902+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 28));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 17.773+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 27));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 21.644+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 26));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 25.515+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 25));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 29.386+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 24));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 33.257+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 23));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 37.128+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 22));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 40.999+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 21));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 44.870+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 20));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 48.741+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 19));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 52.612+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 18));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 56.483+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 17));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 60.354+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 16));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 64.225+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 15));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 68.096+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 14));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 71.967+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 13));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 75.838+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 12));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 79.709+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 11));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 83.580+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 10));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 87.451+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 9));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 91.322+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 8));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 95.193+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 7));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 99.064+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 6));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 102.935+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 5));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 106.806+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 4));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 110.677+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 3));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 114.548+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 2));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 118.419+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS + 1));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 122.289+1.75)), module, QuantMTInt11::INTERVAL_LIGHTS));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 2.289+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 31));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 6.160+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 30));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 10.031+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 29));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 13.902+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 28));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 17.773+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 27));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 21.644+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 26));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 25.515+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 25));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 29.386+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 24));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 33.257+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 23));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 37.128+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 22));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 40.999+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 21));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 44.870+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 20));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 48.741+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 19));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 52.612+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 18));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 56.483+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 17));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 60.354+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 16));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 64.225+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 15));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 68.096+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 14));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 71.967+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 13));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 75.838+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 12));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 79.709+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 11));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 83.580+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 10));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 87.451+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 9));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 91.322+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 8));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 95.193+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 7));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 99.064+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 6));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 102.935+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 5));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 106.806+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 4));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 110.677+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 3));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 114.548+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 2));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 118.419+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 1));
+		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 122.289+1.75)), module, QuantIntervals::INTERVAL_LIGHTS));
 	}
 };
 
 
-Model* modelQuantMTInt11 = createModel<QuantMTInt11, QuantMTInt11Widget>("QuantMTInt11");
+Model* modelQuantIntervals = createModel<QuantIntervals, QuantIntervalsWidget>("QuantIntervals");

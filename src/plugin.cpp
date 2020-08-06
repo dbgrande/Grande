@@ -17,8 +17,7 @@ void init(Plugin* p) {
 	p->addModel(modelQuant);
 	p->addModel(modelQuant31);
 	p->addModel(modelQuantMT);
-	p->addModel(modelQuantMTIntervals);
-	p->addModel(modelQuantMTInt11);
+	p->addModel(modelQuantIntervals);
 	p->addModel(modelSampleDelays);
 	p->addModel(modelScale);
 

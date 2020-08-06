@@ -81,18 +81,9 @@
       ]
     },
     {
-      "slug": "QuantMTIntervals",
-      "name": "QuantMT Intervals",
-      "description": "Microtonal quantizer based on 7-limit pitch intervals.",
-      "tags": [
-        "Quantizer",
-        "Polyphonic"
-      ]
-    },
-    {
-      "slug": "QuantMTInt11",
-      "name": "QuantMT Intervals 11",
-      "description": "Microtonal quantizer based on 11-limit pitch intervals.",
+      "slug": "QuantIntervals",
+      "name": "Quant Intervals",
+      "description": "Microtonal quantizer based on pitch intervals.",
       "tags": [
         "Quantizer",
         "Polyphonic"

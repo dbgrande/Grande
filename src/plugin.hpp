@@ -18,7 +18,6 @@ extern Model* modelNoteMT;
 extern Model* modelQuant;
 extern Model* modelQuant31;
 extern Model* modelQuantMT;
-extern Model* modelQuantMTIntervals;
-extern Model* modelQuantMTInt11;
+extern Model* modelQuantIntervals;
 extern Model* modelSampleDelays;
 extern Model* modelScale;
