@@ -14,6 +14,18 @@ That way I can make a more musically informed decision on which modules to keep.
 
 By David Grande
 
+Current Status (not final)
+--------------
+
+- **QuantMTInt11** renamed to the much simpler **QuantIntervals**.
+
+- **QuantMTIntervals** gone. Redundant.
+
+- **CVInts** and **CVBigInts** gone. There are plenty of other modules that provide constant voltages.
+
+- **Frequency** gone. There are alternatives, and this one isn't really polished enough to release.
+
+
 ***Image not current. It will be updated after I decide which modules make the cut.***
 
 ![Grande Plugins](images/grande_plugins.png "Available Modules")
@@ -88,35 +100,6 @@ Provides three sample-delay buffer chains giving one or two sample delays each.
 
 
 
-CVInts (Ints)
------------
-
-Provides 3 pairs of integer CVs from 0V to 10V (both + and –).
-
-
-
-CVBigInts (BI)
--------------
-
-Provides 3 pairs of integer CVs from 0V to 32V (both + and –).
-
-***Exceeds normal voltage standards, so use with caution. ;-)***
-
-
-
-Frequency (Freq)
----------------
-
-Converts a frequency to V/Oct.
-
-- Thresh sets input threshold voltage (–10V to 10V).
-
-- Smooth sets number of measurements to average together (from 1 to 16).
-
-To use this module as a tuner, combine it with a voltmeter that displays voltages as notes—preferably one that goes from –50 to +50 cents, so the display doesn't bounce around too wildly.
-
-
-
 Microtonal Collection
 =====================
 
@@ -152,10 +135,8 @@ An equal temperament microtonal quantizer where the valid notes are defined dire
 
 
 
-NEW: QuantIntervals
+QuantIntervals
 --------------
-
-**WARNING:** This is a simpler-named version of **QuantMTInt11.** It also obsoletes **QuantMTIntervals,** which has been deleted.
 
 An equal temperament microtonal quantizer where the valid notes are defined indirectly by pitch intervals.
 

@@ -10,9 +10,6 @@ void init(Plugin* p) {
 	// Add modules here
 	// p->addModel(modelMyModule);
 	p->addModel(modelBlank1HP);
-	p->addModel(modelCVBigInts);
-	p->addModel(modelCVInts);
-	p->addModel(modelFrequency);
 	p->addModel(modelNoteMT);
 	p->addModel(modelQuant);
 	p->addModel(modelQuant31);

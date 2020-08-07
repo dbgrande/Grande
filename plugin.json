@@ -22,30 +22,6 @@
       ]
     },
     {
-      "slug": "CVBigInts",
-      "name": "CVBigInts",
-      "description": "Big Integer CVs (+ and –).",
-      "tags": [
-        "Utility"
-      ]
-    },
-    {
-      "slug": "CVInts",
-      "name": "CVInts",
-      "description": "Integer CVs (+ and –).",
-      "tags": [
-        "Utility"
-      ]
-    },
-    {
-      "slug": "Frequency",
-      "name": "Frequency",
-      "description": "Frequency to V/Oct.",
-      "tags": [
-        "Tuner"
-      ]
-    },
-    {
       "slug": "NoteMT",
       "name": "NoteMT",
       "description": "Microtonal note utility.",
