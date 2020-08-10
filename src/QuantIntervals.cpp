@@ -1,5 +1,14 @@
 #include "plugin.hpp"
 
+// Approximate Just scale by using a large equal temperament
+// chosen to minimize worst case error for defined intervals
+// 152 = 2.227¢ = 1.856mV
+// 224 = 1.416¢ = 1.180mV
+// 270 = 0.741¢ = 0.618mV
+// 342 = 0.549¢
+// 494 = 0.484¢
+
+#define MAX_SCALE 270
 
 struct QuantIntervals : Module {
 	enum ParamIds {
@@ -12,6 +21,7 @@ struct QuantIntervals : Module {
 		CLEAR_ALL_PARAM,
 		SEL_ENABLED_PARAM,
 		SHOW_ALLOWED_PARAM,
+		JUST_PARAM,
 		SHOW_NOTES_PARAM,
 		NUM_PARAMS
 	};
@@ -72,6 +82,7 @@ struct QuantIntervals : Module {
 		configParam(CLEAR_ALL_PARAM, 0.0, 1.0, 0.0, "Clear All", "");
 		configParam(SHOW_ALLOWED_PARAM, 0.0, 1.0, 0.0, "Show Valid", "");
 		configParam(SEL_ENABLED_PARAM, 0.0, 1.0, 0.0, "Clear Invalid", "");
+		configParam(JUST_PARAM, 0.0, 1.0, 0.0, "Just ratios", "");
 		configParam(SHOW_NOTES_PARAM, 0.0, 1.0, 0.0, "Show Notes", "");
 	}
 
@@ -83,10 +94,10 @@ struct QuantIntervals : Module {
 	int equal_temp;
 	float step_size;
 	float tolerance;
-	int scale[32];
+	int scale[MAX_SCALE+1];
 	int note_per_oct;
-	int lower[31];
-	int upper[31];
+	int lower[MAX_SCALE];
+	int upper[MAX_SCALE];
 	float transpose[16];
 	float cv_out[16];
 	float last_cv_out[16] = { 0.f };
@@ -113,8 +124,13 @@ struct QuantIntervals : Module {
 			// makes the input voltage range for each note equivalent
 			equi_likely = std::round(params[EQUI_PARAM].getValue());
 
+			// check if using just scale, approximated with a MAX_SCALE define
+			int just = clamp((int)(params[JUST_PARAM].getValue()), 0, 1);
+
 			// equal temperament size
 			equal_temp = clamp((int)(params[SIZE_PARAM].getValue()), 1, 31);
+			if (just == 1)
+				equal_temp = MAX_SCALE;
 			step_size = 1.f / equal_temp;
 
 			// tolerance of note matching interval
@@ -137,9 +153,9 @@ struct QuantIntervals : Module {
 			int show_notes = clamp((int)(params[SHOW_NOTES_PARAM].getValue()), 0, 1);
 
 			// initialize
-			int note_used[32];  // include octave
-			for (int i = 0; i < 32; i++)
-				note_used[i] = -1;  // -1 == unused, 0 - 31 == pointer to interval
+			int note_used[MAX_SCALE + 1];  // include octave
+			for (int i = 0; i < MAX_SCALE + 1; i++)
+				note_used[i] = -1;  // -1 == unused, 0 - 31, or 0 - 61 == pointer to interval
 
 			float interval_used[33];
 			for (int i = 0; i < num_intervals + 1; i++)
@@ -191,15 +207,15 @@ struct QuantIntervals : Module {
 			}
 
 			// scale is defined by used notes from above
-			float input_scale[31];
-			for (int i = 0; i < 31; i++)
+			float input_scale[MAX_SCALE];
+			for (int i = 0; i < MAX_SCALE; i++)
 				input_scale[i] = (note_used[i] >= 0) ? 1 : 0;
 
 			// show all allowed intervals by simulating all intervals selected
 			if (show_allowed == 1) {
-				int d_note_used[32];  // include octave
-				for (int i = 0; i < 32; i++)
-					d_note_used[i] = -1;  // -1 == unused, 0 - 31 == pointer to interval
+				int d_note_used[MAX_SCALE + 1];  // include octave
+				for (int i = 0; i < MAX_SCALE + 1; i++)
+					d_note_used[i] = -1;  // -1 == unused, 0 - 31, or 0 - 61 == pointer to interval
 
 				float d_interval_used[33];
 				for (int i = 0; i < num_intervals; i++)
@@ -234,8 +250,8 @@ struct QuantIntervals : Module {
 						lights[INTERVAL_LIGHTS + i].setBrightness(0.f);
 				}
 			}
-			// show actual notes selected
-			else if (show_notes == 1) {
+			// show actual notes selected (except when using just scale)
+			else if (show_notes == 1 && equal_temp <= 31) {
 				int n;
 				for (n = 0; n < equal_temp; n++)
 					lights[INTERVAL_LIGHTS + n].setBrightness((note_used[n] >= 0) ? 1 : 0);
@@ -393,16 +409,17 @@ struct QuantIntervalsWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(20.93, 18.17)), module, QuantIntervals::SEL_ALL_PARAM));
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(32.43, 18.17)), module, QuantIntervals::CLEAR_ALL_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(20.93, 18.17)), module, QuantIntervals::SEL_ALL_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(32.43, 18.17)), module, QuantIntervals::CLEAR_ALL_PARAM));
 
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(20.93, 29.67)), module, QuantIntervals::SHOW_ALLOWED_PARAM));
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(32.43, 29.67)), module, QuantIntervals::SEL_ENABLED_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(20.93, 29.67)), module, QuantIntervals::SHOW_ALLOWED_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(32.43, 29.67)), module, QuantIntervals::SEL_ENABLED_PARAM));
 
 		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(29.39, 45.00)), module, QuantIntervals::TOLERANCE_PARAM));
 		addParam(createParamCentered<RoundLargeRotarySwitch>(mm2px(Vec(29.39, 63.00)), module, QuantIntervals::SIZE_PARAM));
 
-		addParam(createParam<TL1105Momentary>(mm2px(Vec(17.30, 70.50)), module, QuantIntervals::SHOW_NOTES_PARAM));
+		addParam(createParam<TL1105Red>(mm2px(Vec(17.30, 50.50)), module, QuantIntervals::JUST_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(17.30, 70.50)), module, QuantIntervals::SHOW_NOTES_PARAM));
 
 		addParam(createParam<CKSSThree>(mm2px(Vec(21.39, 80.00)), module, QuantIntervals::ROUNDING_PARAM));
 		addParam(createParam<CKSS>(mm2px(Vec(32.89, 81.00)), module, QuantIntervals::EQUI_PARAM));

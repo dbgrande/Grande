@@ -72,13 +72,13 @@ struct ConfigButton : SvgSwitch {
   }
 };
 
-struct TL1105Momentary : SvgSwitch {
-  TL1105Momentary() {
-    momentary = true;
-    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TL1105_0.svg")));
-    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TL1105_1.svg")));
-    fb->removeChild(shadow);
-    delete shadow;
+struct TL1105Red : SvgSwitch {
+  TL1105Red() {
+    momentary = false;
+    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TL1105_Gray.svg")));
+    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/TL1105_Red.svg")));
+    //fb->removeChild(shadow);
+    //delete shadow;
   }
 };
 

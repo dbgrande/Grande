@@ -142,6 +142,8 @@ An equal temperament microtonal quantizer where the valid notes are defined indi
 
 - Notes/Oct knob defines temperament, from 1-TET through 31-TET (default 12-TET).
 
+- **New:** Just - Gives an approximation to Just temperament. Current worst case error is about 0.75 cents (0.62mV).
+
 - Tolerance knob defines required accuracy for matching, from 0 to 50 cents (default 20 cents).
 
 - The interval buttons select desired pitch intervals, but they need to be mapped to notes in the selected temperament. Valid notes are those that match selected intervals within the specified tolerance. These are indicated by a blue light, with the brightness indicating how close the match is.
@@ -156,8 +158,7 @@ An equal temperament microtonal quantizer where the valid notes are defined indi
 
 - Clear Invalid - Deselects all intervals that don't have a light showing.
 
-- Show Notes - Displays actual notes being used on blue lights. Useful for understanding what this quantizer is doing, and allows converting its results to another quantizer, like **QuantMT.**
-
+- Show Notes - Displays actual notes being used on blue lights. Useful for understanding what this quantizer is doing, and allows converting its results to another quantizer, like **QuantMT.** However, this feature is disabled when using Just temperament.
 
 - Quantizer features are the same as **Quant** (above), minus the external scale input. 
 
