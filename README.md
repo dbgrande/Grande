@@ -116,6 +116,8 @@ Quant31
 
 A 31-TET microtonal quantizer with Equi-likely mode.
 
+- **New:** The two small unmarked buttons at the top of the note selection column are "Set All" and "Clear All".
+
 - Same features as **Quant** (above), except no external scale input, and 31 buttons.
 
 
