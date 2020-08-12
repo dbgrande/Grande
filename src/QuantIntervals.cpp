@@ -2,11 +2,8 @@
 
 // Approximate Just scale by using a large equal temperament
 // chosen to minimize worst case error for defined intervals
-// 152 = 2.227¢ = 1.856mV
-// 224 = 1.416¢ = 1.180mV
-// 270 = 0.741¢ = 0.618mV
-// 342 = 0.549¢
-// 494 = 0.484¢
+// 270  1.008¢
+// 342  0.753¢
 
 #define MAX_SCALE 270
 
@@ -15,10 +12,18 @@ struct QuantIntervals : Module {
 		ROUNDING_PARAM,
 		EQUI_PARAM,
 		SIZE_PARAM,
-		ENUMS(INTERVAL_PARAMS, 32),
+		ENUMS(INTERVAL_PARAMS, 65),
 		TOLERANCE_PARAM,
-		SEL_ALL_PARAM,
+		SET_ALL_PARAM,
 		CLEAR_ALL_PARAM,
+		SET_SMALL_PARAM,
+		SHOW_SMALL_PARAM,
+		CLEAR_LARGE_PARAM,
+		CLEAR_MEDIUM_PARAM,
+		ADD_11S_PARAM,
+		ADD_7S_PARAM,
+		ADD_5S_PARAM,
+		ADD_3S_PARAM,
 		SEL_ENABLED_PARAM,
 		SHOW_ALLOWED_PARAM,
 		JUST_PARAM,
@@ -36,7 +41,7 @@ struct QuantIntervals : Module {
 		NUM_OUTPUTS
 	};
 	enum LightIds {
-		ENUMS(INTERVAL_LIGHTS, 32),
+		ENUMS(INTERVAL_LIGHTS, 65),
 		NUM_LIGHTS
 	};
 
@@ -46,43 +51,84 @@ struct QuantIntervals : Module {
 		configParam(EQUI_PARAM, 0.0, 1.0, 0.0, "Equi-likely notes", "");
 		configParam(SIZE_PARAM, 1, 31, 12, "Notes per Octave", "");
 		configParam(INTERVAL_PARAMS, 0.0, 1.0, 1.0, "0.0", "");  // Unison
-		configParam(INTERVAL_PARAMS + 1, 0.0, 1.0, 0.0, "111.7", "");
-		configParam(INTERVAL_PARAMS + 2, 0.0, 1.0, 0.0, "150.6", "");
-		configParam(INTERVAL_PARAMS + 3, 0.0, 1.0, 0.0, "165.0", "");
-		configParam(INTERVAL_PARAMS + 4, 0.0, 1.0, 0.0, "182.4", "");
-		configParam(INTERVAL_PARAMS + 5, 0.0, 1.0, 1.0, "203.9", "");
-		configParam(INTERVAL_PARAMS + 6, 0.0, 1.0, 0.0, "231.2", "");
-		configParam(INTERVAL_PARAMS + 7, 0.0, 1.0, 0.0, "266.9", "");
-		configParam(INTERVAL_PARAMS + 8, 0.0, 1.0, 0.0, "315.6", "");
-		configParam(INTERVAL_PARAMS + 9, 0.0, 1.0, 0.0, "347.4", "");
-		configParam(INTERVAL_PARAMS + 10, 0.0, 1.0, 1.0, "386.3", "");
-		configParam(INTERVAL_PARAMS + 11, 0.0, 1.0, 0.0, "417.5", "");
-		configParam(INTERVAL_PARAMS + 12, 0.0, 1.0, 0.0, "435.1", "");
-		configParam(INTERVAL_PARAMS + 13, 0.0, 1.0, 1.0, "498.0", "");
-		configParam(INTERVAL_PARAMS + 14, 0.0, 1.0, 0.0, "551.3", "");
-		configParam(INTERVAL_PARAMS + 15, 0.0, 1.0, 0.0, "582.5", "");
-		configParam(INTERVAL_PARAMS + 16, 0.0, 1.0, 0.0, "617.5", "");
-		configParam(INTERVAL_PARAMS + 17, 0.0, 1.0, 0.0, "648.7", "");
-		configParam(INTERVAL_PARAMS + 18, 0.0, 1.0, 1.0, "702.0", "");
-		configParam(INTERVAL_PARAMS + 19, 0.0, 1.0, 0.0, "764.9", "");
-		configParam(INTERVAL_PARAMS + 20, 0.0, 1.0, 0.0, "782.5", "");
-		configParam(INTERVAL_PARAMS + 21, 0.0, 1.0, 0.0, "813.7", "");
-		configParam(INTERVAL_PARAMS + 22, 0.0, 1.0, 0.0, "852.6", "");
-		configParam(INTERVAL_PARAMS + 23, 0.0, 1.0, 1.0, "884.4", "");
-		configParam(INTERVAL_PARAMS + 24, 0.0, 1.0, 0.0, "933.1", "");
-		configParam(INTERVAL_PARAMS + 25, 0.0, 1.0, 0.0, "968.8", "");
-		configParam(INTERVAL_PARAMS + 26, 0.0, 1.0, 0.0, "996.1", "");
-		configParam(INTERVAL_PARAMS + 27, 0.0, 1.0, 0.0, "1017.6", "");
-		configParam(INTERVAL_PARAMS + 28, 0.0, 1.0, 0.0, "1035.0", "");
-		configParam(INTERVAL_PARAMS + 29, 0.0, 1.0, 0.0, "1049.4", "");
-		configParam(INTERVAL_PARAMS + 30, 0.0, 1.0, 1.0, "1088.3", "");
-		configParam(INTERVAL_PARAMS + 31, 0.0, 1.0, 0.0, "1137.0", "");
+		configParam(INTERVAL_PARAMS + 1, 0.0, 1.0, 0.0, "53.3", "");
+		configParam(INTERVAL_PARAMS + 2, 0.0, 1.0, 0.0, "63.0", "");
+		configParam(INTERVAL_PARAMS + 3, 0.0, 1.0, 0.0, "70.7", "");
+		configParam(INTERVAL_PARAMS + 4, 0.0, 1.0, 0.0, "80.5", "");
+		configParam(INTERVAL_PARAMS + 5, 0.0, 1.0, 0.0, "84.5", "");
+		configParam(INTERVAL_PARAMS + 6, 0.0, 1.0, 0.0, "101.9", "");
+		configParam(INTERVAL_PARAMS + 7, 0.0, 1.0, 0.0, "111.7", "");
+		configParam(INTERVAL_PARAMS + 8, 0.0, 1.0, 0.0, "119.4", "");
+		configParam(INTERVAL_PARAMS + 9, 0.0, 1.0, 0.0, "133.2", "");
+		configParam(INTERVAL_PARAMS + 10, 0.0, 1.0, 0.0, "150.6", "");
+		configParam(INTERVAL_PARAMS + 11, 0.0, 1.0, 0.0, "155.1", "");
+		configParam(INTERVAL_PARAMS + 12, 0.0, 1.0, 0.0, "165.0", "");
+		configParam(INTERVAL_PARAMS + 13, 0.0, 1.0, 0.0, "182.4", "");
+		configParam(INTERVAL_PARAMS + 14, 0.0, 1.0, 0.0, "196.2", "");
+		configParam(INTERVAL_PARAMS + 15, 0.0, 1.0, 1.0, "203.9", "");
+		configParam(INTERVAL_PARAMS + 16, 0.0, 1.0, 0.0, "221.3", "");
+		configParam(INTERVAL_PARAMS + 17, 0.0, 1.0, 0.0, "231.2", "");
+		configParam(INTERVAL_PARAMS + 18, 0.0, 1.0, 0.0, "266.9", "");
+		configParam(INTERVAL_PARAMS + 19, 0.0, 1.0, 0.0, "284.4", "");
+		configParam(INTERVAL_PARAMS + 20, 0.0, 1.0, 0.0, "294.1", "");
+		configParam(INTERVAL_PARAMS + 21, 0.0, 1.0, 0.0, "301.8", "");
+		configParam(INTERVAL_PARAMS + 22, 0.0, 1.0, 0.0, "315.6", "");
+		configParam(INTERVAL_PARAMS + 23, 0.0, 1.0, 0.0, "347.4", "");
+		configParam(INTERVAL_PARAMS + 24, 0.0, 1.0, 0.0, "354.5", "");
+		configParam(INTERVAL_PARAMS + 25, 0.0, 1.0, 1.0, "386.3", "");
+		configParam(INTERVAL_PARAMS + 26, 0.0, 1.0, 0.0, "417.5", "");
+		configParam(INTERVAL_PARAMS + 27, 0.0, 1.0, 0.0, "427.4", "");
+		configParam(INTERVAL_PARAMS + 28, 0.0, 1.0, 0.0, "435.1", "");
+		configParam(INTERVAL_PARAMS + 29, 0.0, 1.0, 0.0, "449.3", "");
+		configParam(INTERVAL_PARAMS + 30, 0.0, 1.0, 0.0, "470.8", "");
+		configParam(INTERVAL_PARAMS + 31, 0.0, 1.0, 0.0, "480.6", "");
+		configParam(INTERVAL_PARAMS + 32, 0.0, 1.0, 1.0, "498.0", "");
+		configParam(INTERVAL_PARAMS + 33, 0.0, 1.0, 0.0, "519.6", "");
+		configParam(INTERVAL_PARAMS + 34, 0.0, 1.0, 0.0, "537.0", "");
+		configParam(INTERVAL_PARAMS + 35, 0.0, 1.0, 0.0, "551.3", "");
+		configParam(INTERVAL_PARAMS + 36, 0.0, 1.0, 0.0, "568.7", "");
+		configParam(INTERVAL_PARAMS + 37, 0.0, 1.0, 0.0, "582.5", "");
+		configParam(INTERVAL_PARAMS + 38, 0.0, 1.0, 0.0, "617.5", "");
+		configParam(INTERVAL_PARAMS + 39, 0.0, 1.0, 0.0, "648.7", "");
+		configParam(INTERVAL_PARAMS + 40, 0.0, 1.0, 0.0, "653.2", "");
+		configParam(INTERVAL_PARAMS + 41, 0.0, 1.0, 0.0, "663.0", "");
+		configParam(INTERVAL_PARAMS + 42, 0.0, 1.0, 1.0, "702.0", "");
+		configParam(INTERVAL_PARAMS + 43, 0.0, 1.0, 0.0, "729.2", "");
+		configParam(INTERVAL_PARAMS + 44, 0.0, 1.0, 0.0, "764.9", "");
+		configParam(INTERVAL_PARAMS + 45, 0.0, 1.0, 0.0, "772.6", "");
+		configParam(INTERVAL_PARAMS + 46, 0.0, 1.0, 0.0, "782.5", "");
+		configParam(INTERVAL_PARAMS + 47, 0.0, 1.0, 0.0, "803.8", "");
+		configParam(INTERVAL_PARAMS + 48, 0.0, 1.0, 0.0, "813.7", "");
+		configParam(INTERVAL_PARAMS + 49, 0.0, 1.0, 0.0, "852.6", "");
+		configParam(INTERVAL_PARAMS + 50, 0.0, 1.0, 0.0, "867.0", "");
+		configParam(INTERVAL_PARAMS + 51, 0.0, 1.0, 1.0, "884.4", "");
+		configParam(INTERVAL_PARAMS + 52, 0.0, 1.0, 0.0, "905.9", "");
+		configParam(INTERVAL_PARAMS + 53, 0.0, 1.0, 0.0, "933.1", "");
+		configParam(INTERVAL_PARAMS + 54, 0.0, 1.0, 0.0, "968.8", "");
+		configParam(INTERVAL_PARAMS + 55, 0.0, 1.0, 0.0, "996.1", "");
+		configParam(INTERVAL_PARAMS + 56, 0.0, 1.0, 0.0, "1003.8", "");
+		configParam(INTERVAL_PARAMS + 57, 0.0, 1.0, 0.0, "1017.6", "");
+		configParam(INTERVAL_PARAMS + 58, 0.0, 1.0, 0.0, "1035.0", "");
+		configParam(INTERVAL_PARAMS + 59, 0.0, 1.0, 0.0, "1049.4", "");
+		configParam(INTERVAL_PARAMS + 60, 0.0, 1.0, 0.0, "1080.6", "");
+		configParam(INTERVAL_PARAMS + 61, 0.0, 1.0, 1.0, "1088.3", "");
+		configParam(INTERVAL_PARAMS + 62, 0.0, 1.0, 0.0, "1119.5", "");
+		configParam(INTERVAL_PARAMS + 63, 0.0, 1.0, 0.0, "1137.0", "");
+		configParam(INTERVAL_PARAMS + 64, 0.0, 1.0, 0.0, "1151.2", "");
 		configParam(TOLERANCE_PARAM, 0.0, 50.0, 20.0, "Tolerance", "¢");
-		configParam(SEL_ALL_PARAM, 0.0, 1.0, 0.0, "Set All", "");
+		configParam(SET_ALL_PARAM, 0.0, 1.0, 0.0, "Set All", "");
 		configParam(CLEAR_ALL_PARAM, 0.0, 1.0, 0.0, "Clear All", "");
+		configParam(SET_SMALL_PARAM, 0.0, 1.0, 0.0, "Set Small Ratios", "");
+		configParam(SHOW_SMALL_PARAM, 0.0, 1.0, 0.0, "Show Small Valid", "");
+		configParam(CLEAR_LARGE_PARAM, 0.0, 1.0, 0.0, "Clear Large Ratios", "");
+		configParam(CLEAR_MEDIUM_PARAM, 0.0, 1.0, 0.0, "Clear Medium Ratios", "");
+		configParam(ADD_11S_PARAM, 0.0, 1.0, 0.0, "Add 11 Ratios", "");
+		configParam(ADD_7S_PARAM, 0.0, 1.0, 0.0, "Add 7 Ratios", "");
+		configParam(ADD_5S_PARAM, 0.0, 1.0, 0.0, "Add 5 Ratios", "");
+		configParam(ADD_3S_PARAM, 0.0, 1.0, 0.0, "Add 3 Ratios", "");
 		configParam(SHOW_ALLOWED_PARAM, 0.0, 1.0, 0.0, "Show Valid", "");
 		configParam(SEL_ENABLED_PARAM, 0.0, 1.0, 0.0, "Clear Invalid", "");
-		configParam(JUST_PARAM, 0.0, 1.0, 0.0, "Just ratios", "");
+		configParam(JUST_PARAM, 0.0, 1.0, 0.0, "Just Intervals", "");
 		configParam(SHOW_NOTES_PARAM, 0.0, 1.0, 0.0, "Show Notes", "");
 	}
 
@@ -101,16 +147,29 @@ struct QuantIntervals : Module {
 	float transpose[16];
 	float cv_out[16];
 	float last_cv_out[16] = { 0.f };
-	// 1:1, 16:15, 12:11, 11:10, 10:9, 9:8, 8:7, 7:6,
-	// 6:5, 11:9, 5:4, 14:11, 9:7, 4:3, 11:8, 7:5,
-	// 10:7, 16:11, 3:2, 14:9, 11:7, 8:5, 18:11, 5:3,
-	// 12:7, 7:4, 16:9, 9:5, 20:11, 11:6, 15:8, 27:14, 2:1
-	float interval_lu[33] = { 0.f, 0.0931094f, 0.1255309f, 0.1375035f, 0.1520031f, 0.1699250f, 0.1926451f, 0.2223924f,
-		0.2630344f, 0.2895066f, 0.3219281f, 0.3479233f, 0.3625701f, 0.4150375f, 0.4594316f, 0.4854268f,
-		0.5145732f, 0.5405684f, 0.5849625f, 0.6374299f, 0.6520767f, 0.6780719f, 0.7104934f, 0.7369656f,
-		0.7776076f, 0.8073549f, 0.8300750f, 0.8479969f, 0.8624965f, 0.8744691f, 0.9068906f, 0.9475326f, 1.f };
+	float interval_lu[66] = { 0.f, 0.0443941f, 0.0524674f, 0.0588937f, 0.0671142f, 0.0703893f, 0.0848889f, 0.0931094f, 
+		0.0995357f, 0.1110313f, 0.1255309f, 0.1292830f, 0.1375035f, 0.1520031f, 0.1634987f, 0.1699250f, 
+		0.1844246f, 0.1926451f, 0.2223924f, 0.2370392f, 0.2451125f, 0.2515388f, 0.2630344f, 0.2895066f, 
+		0.2954559f, 0.3219281f, 0.3479233f, 0.3561438f, 0.3625701f, 0.3743955f, 0.3923174f, 0.4005379f, 
+		0.4150375f, 0.4329594f, 0.4474590f, 0.4594316f, 0.4739312f, 0.4854268f, 0.5145732f, 0.5405684f, 
+		0.5443205f, 0.5525410f, 0.5849625f, 0.6076826f, 0.6374299f, 0.6438562f, 0.6520767f, 0.6698514f, 
+		0.6780719f, 0.7104934f, 0.7224660f, 0.7369656f, 0.7548875f, 0.7776076f, 0.8073549f, 0.8300750f, 
+		0.8365013f, 0.8479969f, 0.8624965f, 0.8744691f, 0.9004643f, 0.9068906f, 0.9328858f, 0.9475326f, 
+		0.9593580f, 1.f };
+	int num_intervals = 65;  // not including octave
+	// defines limit for each interval
+	int limit_lu[66] = { 0, 11, 7, 5, 11, 7, 11, 5, 7, 5, 11, 7, 11, 5, 7, 3,
+		11, 7, 7, 11, 3, 7, 5, 11, 11, 5, 11, 5, 7, 7, 7, 11,
+		3, 5, 11, 11, 5, 7, 7, 11, 7, 11, 3, 7, 7, 5, 11, 11,
+		5, 11, 11, 5, 3, 7, 7, 3, 7, 5, 11, 11, 7, 5, 11, 7,
+		7, 0 };
+	// large = 30 or denominator ≥ 25, small = denominator ≤ 10 and 16/15 (C#)
+	int ratio_size[66] = { 1, 3, 3, 2, 2, 2, 3, 1, 2, 3, 2, 3, 1, 1, 3, 1,
+		2, 1, 1, 3, 3, 2, 1, 1, 2, 1, 2, 3, 1, 3, 2, 3,
+		1, 2, 2, 1, 2, 1, 1, 2, 3, 2, 1, 3, 1, 2, 1, 3,
+		1, 2, 3, 1, 2, 1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 2,
+		3, 1 };
 
-	int num_intervals = 32;  // not including octave
 
 	void process(const ProcessArgs &args) override {
 		if (param_timer == 0) {
@@ -139,15 +198,23 @@ struct QuantIntervals : Module {
 
 			// read interval buttons
 			// include extra entry for octave, for rounding
-			int interval_inputs[33];
+			int interval_inputs[66];
 			// break out bit 0 to avoid uninitialized warning
 			interval_inputs[0] = clamp((int)(params[INTERVAL_PARAMS + 0].getValue()), 0, 1);
 			for (int i = 1; i < num_intervals; i++)
 				interval_inputs[i] = clamp((int)(params[INTERVAL_PARAMS + i].getValue()), 0, 1);
 			interval_inputs[num_intervals] = interval_inputs[0];  // map unison to octave
 
-			int sel_all = clamp((int)(params[SEL_ALL_PARAM].getValue()), 0, 1);
+			int set_all = clamp((int)(params[SET_ALL_PARAM].getValue()), 0, 1);
 			int clear_all = clamp((int)(params[CLEAR_ALL_PARAM].getValue()), 0, 1);
+			int set_small = clamp((int)(params[SET_SMALL_PARAM].getValue()), 0, 1);
+			int show_small = clamp((int)(params[SHOW_SMALL_PARAM].getValue()), 0, 1);
+			int clear_large = clamp((int)(params[CLEAR_LARGE_PARAM].getValue()), 0, 1);
+			int clear_medium = clamp((int)(params[CLEAR_MEDIUM_PARAM].getValue()), 0, 1);
+			int add_11s = clamp((int)(params[ADD_11S_PARAM].getValue()), 0, 1);
+			int add_7s = clamp((int)(params[ADD_7S_PARAM].getValue()), 0, 1);
+			int add_5s = clamp((int)(params[ADD_5S_PARAM].getValue()), 0, 1);
+			int add_3s = clamp((int)(params[ADD_3S_PARAM].getValue()), 0, 1);
 			int sel_enabled = clamp((int)(params[SEL_ENABLED_PARAM].getValue()), 0, 1);
 			int show_allowed = clamp((int)(params[SHOW_ALLOWED_PARAM].getValue()), 0, 1);
 			int show_notes = clamp((int)(params[SHOW_NOTES_PARAM].getValue()), 0, 1);
@@ -157,7 +224,7 @@ struct QuantIntervals : Module {
 			for (int i = 0; i < MAX_SCALE + 1; i++)
 				note_used[i] = -1;  // -1 == unused, 0 - 31, or 0 - 61 == pointer to interval
 
-			float interval_used[33];
+			float interval_used[66];
 			for (int i = 0; i < num_intervals + 1; i++)
 				interval_used[i] = -1.f;  // < -0.5f == unused, 0.f - min(tolerance, step_size) == current error
 
@@ -189,7 +256,7 @@ struct QuantIntervals : Module {
 			}
 
 			// these will take effect next time around
-			if (sel_all == 1) {
+			if (set_all == 1) {
 				for (int i = 0; i < num_intervals; i++)
 					params[INTERVAL_PARAMS + i].setValue(1);
 			}
@@ -197,6 +264,40 @@ struct QuantIntervals : Module {
 				params[INTERVAL_PARAMS + 0].setValue(1);
 				for (int i = 1; i < num_intervals; i++)
 					params[INTERVAL_PARAMS + i].setValue(0);
+			}
+			else if (set_small == 1) {
+				for (int i = 0; i < num_intervals; i++)
+					params[INTERVAL_PARAMS + i].setValue(ratio_size[i] == 1 ? 1 : 0);
+			}
+			else if (clear_large == 1) {
+				for (int i = 0; i < num_intervals; i++)
+					if (ratio_size[i] >= 3)
+						params[INTERVAL_PARAMS + i].setValue(0);
+			}
+			else if (clear_medium == 1) {
+				for (int i = 0; i < num_intervals; i++)
+					if (ratio_size[i] >= 2)
+						params[INTERVAL_PARAMS + i].setValue(0);
+			}
+			else if (add_11s == 1) {
+				for (int i = 1; i < num_intervals; i++)
+					if (limit_lu[i] == 11)
+						params[INTERVAL_PARAMS + i].setValue(1);
+			}
+			else if (add_7s == 1) {
+				for (int i = 1; i < num_intervals; i++)
+					if (limit_lu[i] == 7)
+						params[INTERVAL_PARAMS + i].setValue(1);
+			}
+			else if (add_5s == 1) {
+				for (int i = 1; i < num_intervals; i++)
+					if (limit_lu[i] == 5)
+						params[INTERVAL_PARAMS + i].setValue(1);
+			}
+			else if (add_3s == 1) {
+				for (int i = 1; i < num_intervals; i++)
+					if (limit_lu[i] == 3)
+						params[INTERVAL_PARAMS + i].setValue(1);
 			}
 			else if (sel_enabled == 1) {
 				for (int i = 0; i < num_intervals; i++)
@@ -212,35 +313,37 @@ struct QuantIntervals : Module {
 				input_scale[i] = (note_used[i] >= 0) ? 1 : 0;
 
 			// show all allowed intervals by simulating all intervals selected
-			if (show_allowed == 1) {
+			if (show_allowed == 1  || show_small == 1) {
 				int d_note_used[MAX_SCALE + 1];  // include octave
 				for (int i = 0; i < MAX_SCALE + 1; i++)
 					d_note_used[i] = -1;  // -1 == unused, 0 - 31, or 0 - 61 == pointer to interval
 
-				float d_interval_used[33];
+				float d_interval_used[66];
 				for (int i = 0; i < num_intervals; i++)
 					d_interval_used[i] = -1.f;  // < -0.5f == unused, 0.f - min(tolerance, step_size) == current error
 
 				for (int i = 0; i < num_intervals + 1; i++) {
-					int closest_note = floorf((interval_lu[i] / step_size) + 0.5f);
-					float error = fabsf(interval_lu[i] - closest_note * step_size);
-					if (error <= tolerance) {
-						int prev_int = d_note_used[closest_note];
-						if (prev_int >= 0 && error < d_interval_used[prev_int]) {
-							d_interval_used[prev_int] = -1.f;  // zero out previous interval
-							d_note_used[closest_note] = i;
-							d_interval_used[i] = error;
-						}
-						else if (prev_int < 0) {
-							d_note_used[closest_note] = i;
-							d_interval_used[i] = error;
+					if (show_small == 0 || (show_small == 1 && ratio_size[i] == 1)) {  // only check small if show small
+						int closest_note = floorf((interval_lu[i] / step_size) + 0.5f);
+						float error = fabsf(interval_lu[i] - closest_note * step_size);
+						if (error <= tolerance) {
+							int prev_int = d_note_used[closest_note];
+							if (prev_int >= 0 && error < d_interval_used[prev_int]) {
+								d_interval_used[prev_int] = -1.f;  // zero out previous interval
+								d_note_used[closest_note] = i;
+								d_interval_used[i] = error;
+							}
+							else if (prev_int < 0) {
+								d_note_used[closest_note] = i;
+								d_interval_used[i] = error;
+							}
 						}
 					}
 				}
 				// show all allowed lights, with error amount
-				for (int i = 0; i < 32; i++) {
+				for (int i = 0; i < 65; i++) {
 					if (d_interval_used[i] > -0.5) {  //interval used
-					float error = d_interval_used[i] * 1200.f / 6.f;  // 6¢
+						float error = d_interval_used[i] * 1200.f / 6.f;  // 6¢
 						if (error < 1.f)
 							lights[INTERVAL_LIGHTS + i].setBrightness(1.f);
 						else
@@ -253,14 +356,17 @@ struct QuantIntervals : Module {
 			// show actual notes selected (except when using just scale)
 			else if (show_notes == 1 && equal_temp <= 31) {
 				int n;
-				for (n = 0; n < equal_temp; n++)
-					lights[INTERVAL_LIGHTS + n].setBrightness((note_used[n] >= 0) ? 1 : 0);
-				for ( ; n < 32; n++)
+				for (n = 0; n < equal_temp; n++) {
+					lights[INTERVAL_LIGHTS + 2 * n].setBrightness((note_used[n] >= 0) ? 1 : 0);
+					lights[INTERVAL_LIGHTS + 2 * n + 1].setBrightness(0);
+				}
+				for (n = 2 * n ; n < 65; n++) {
 					lights[INTERVAL_LIGHTS + n].setBrightness(0);
+				}
 			}
 			else {
 				// show normal lights, which give error for selected intervals
-				for (int i = 0; i < 32; i++) {
+				for (int i = 0; i < 65; i++) {
 					if (interval_used[i] > -0.5) {  //interval used
 					float error = interval_used[i] * 1200.f / 6.f;  // 6¢
 						if (error < 1.f)
@@ -405,96 +511,55 @@ struct QuantIntervalsWidget : ModuleWidget {
 		setModule(module);
 		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/QuantIntervals.svg")));
 
-		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 4 * RACK_GRID_WIDTH, 0)));
+		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
+		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
+		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
+		addParam(createParam<TL1105>(mm2px(Vec(51.00-2.709, 17.50-2.709)), module, QuantIntervals::SET_SMALL_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(62.00+0.5-2.709, 17.50-2.709)), module, QuantIntervals::SET_ALL_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(74.00-2.709, 17.50-2.709)), module, QuantIntervals::CLEAR_ALL_PARAM));
 
-		addParam(createParam<TL1105>(mm2px(Vec(20.93, 18.17)), module, QuantIntervals::SEL_ALL_PARAM));
-		addParam(createParam<TL1105>(mm2px(Vec(32.43, 18.17)), module, QuantIntervals::CLEAR_ALL_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(51.00-2.709, 29.75-2.709)), module, QuantIntervals::SHOW_SMALL_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(62.00+0.5-2.709, 29.75-2.709)), module, QuantIntervals::SHOW_ALLOWED_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(74.00-2.709, 29.75-2.709)), module, QuantIntervals::SEL_ENABLED_PARAM));
 
-		addParam(createParam<TL1105>(mm2px(Vec(20.93, 29.67)), module, QuantIntervals::SHOW_ALLOWED_PARAM));
-		addParam(createParam<TL1105>(mm2px(Vec(32.43, 29.67)), module, QuantIntervals::SEL_ENABLED_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(51.00-2.709, 42.00-2.709)), module, QuantIntervals::CLEAR_LARGE_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(51.00-2.709, 54.25-2.709)), module, QuantIntervals::CLEAR_MEDIUM_PARAM));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(29.39, 45.00)), module, QuantIntervals::TOLERANCE_PARAM));
-		addParam(createParamCentered<RoundLargeRotarySwitch>(mm2px(Vec(29.39, 63.00)), module, QuantIntervals::SIZE_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(51.00-2.709, 66.50-2.709)), module, QuantIntervals::ADD_11S_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(51.00-2.709, 75.25-2.709)), module, QuantIntervals::ADD_7S_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(51.00-2.709, 84.00-2.709)), module, QuantIntervals::ADD_5S_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(51.00-2.709, 92.75-2.709)), module, QuantIntervals::ADD_3S_PARAM));
 
-		addParam(createParam<TL1105Red>(mm2px(Vec(17.30, 50.50)), module, QuantIntervals::JUST_PARAM));
-		addParam(createParam<TL1105>(mm2px(Vec(17.30, 70.50)), module, QuantIntervals::SHOW_NOTES_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(68.00, 43.75)), module, QuantIntervals::TOLERANCE_PARAM));
+		addParam(createParamCentered<RoundLargeRotarySwitch>(mm2px(Vec(68.00, 63.00)), module, QuantIntervals::SIZE_PARAM));
 
-		addParam(createParam<CKSSThree>(mm2px(Vec(21.39, 80.00)), module, QuantIntervals::ROUNDING_PARAM));
-		addParam(createParam<CKSS>(mm2px(Vec(32.89, 81.00)), module, QuantIntervals::EQUI_PARAM));
+		addParam(createParam<TL1105Red>(mm2px(Vec(51.00-2.709, 105.0-2.709)), module, QuantIntervals::JUST_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(51.00-2.709, 117.25-2.709)), module, QuantIntervals::SHOW_NOTES_PARAM));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(23.64, 100.0)), module, QuantIntervals::CV_IN_INPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(35.14, 100.0)), module, QuantIntervals::CV_OUT_OUTPUT));
+		addParam(createParam<CKSSThree>(mm2px(Vec(59.75, 79.00)), module, QuantIntervals::ROUNDING_PARAM));
+		addParam(createParam<CKSS>(mm2px(Vec(71.75, 80.00)), module, QuantIntervals::EQUI_PARAM));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(23.64, 115.0)), module, QuantIntervals::ROOT_INPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(35.14, 115.0)), module, QuantIntervals::TRIGGER_OUTPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(62.00, 100.0)), module, QuantIntervals::CV_IN_INPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(74.00, 100.0)), module, QuantIntervals::CV_OUT_OUTPUT));
 
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 2.289)), module, QuantIntervals::INTERVAL_PARAMS + 31));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 6.160)), module, QuantIntervals::INTERVAL_PARAMS + 30));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 10.031)), module, QuantIntervals::INTERVAL_PARAMS + 29));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 13.902)), module, QuantIntervals::INTERVAL_PARAMS + 28));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 17.773)), module, QuantIntervals::INTERVAL_PARAMS + 27));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 21.644)), module, QuantIntervals::INTERVAL_PARAMS + 26));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 25.515)), module, QuantIntervals::INTERVAL_PARAMS + 25));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 29.386)), module, QuantIntervals::INTERVAL_PARAMS + 24));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 33.257)), module, QuantIntervals::INTERVAL_PARAMS + 23));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 37.128)), module, QuantIntervals::INTERVAL_PARAMS + 22));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 40.999)), module, QuantIntervals::INTERVAL_PARAMS + 21));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 44.870)), module, QuantIntervals::INTERVAL_PARAMS + 20));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 48.741)), module, QuantIntervals::INTERVAL_PARAMS + 19));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 52.612)), module, QuantIntervals::INTERVAL_PARAMS + 18));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 56.483)), module, QuantIntervals::INTERVAL_PARAMS + 17));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 60.354)), module, QuantIntervals::INTERVAL_PARAMS + 16));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 64.225)), module, QuantIntervals::INTERVAL_PARAMS + 15));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 68.096)), module, QuantIntervals::INTERVAL_PARAMS + 14));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 71.967)), module, QuantIntervals::INTERVAL_PARAMS + 13));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 75.838)), module, QuantIntervals::INTERVAL_PARAMS + 12));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 79.709)), module, QuantIntervals::INTERVAL_PARAMS + 11));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 83.580)), module, QuantIntervals::INTERVAL_PARAMS + 10));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 87.451)), module, QuantIntervals::INTERVAL_PARAMS + 9));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 91.322)), module, QuantIntervals::INTERVAL_PARAMS + 8));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 95.193)), module, QuantIntervals::INTERVAL_PARAMS + 7));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 99.064)), module, QuantIntervals::INTERVAL_PARAMS + 6));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 102.935)), module, QuantIntervals::INTERVAL_PARAMS + 5));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 106.806)), module, QuantIntervals::INTERVAL_PARAMS + 4));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 110.677)), module, QuantIntervals::INTERVAL_PARAMS + 3));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 114.548)), module, QuantIntervals::INTERVAL_PARAMS + 2));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 118.419)), module, QuantIntervals::INTERVAL_PARAMS + 1));
-		addParam(createParam<RectButton>(mm2px(Vec(4.00, 122.289)), module, QuantIntervals::INTERVAL_PARAMS + 0));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(62.00, 115.0)), module, QuantIntervals::ROOT_INPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(74.00, 115.0)), module, QuantIntervals::TRIGGER_OUTPUT));
 
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 2.289+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 31));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 6.160+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 30));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 10.031+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 29));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 13.902+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 28));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 17.773+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 27));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 21.644+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 26));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 25.515+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 25));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 29.386+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 24));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 33.257+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 23));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 37.128+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 22));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 40.999+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 21));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 44.870+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 20));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 48.741+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 19));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 52.612+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 18));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 56.483+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 17));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 60.354+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 16));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 64.225+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 15));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 68.096+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 14));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 71.967+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 13));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 75.838+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 12));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 79.709+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 11));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 83.580+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 10));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 87.451+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 9));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 91.322+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 8));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 95.193+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 7));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 99.064+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 6));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 102.935+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 5));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 106.806+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 4));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 110.677+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 3));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 114.548+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 2));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 118.419+1.75)), module, QuantIntervals::INTERVAL_LIGHTS + 1));
-		addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(2.50, 122.289+1.75)), module, QuantIntervals::INTERVAL_LIGHTS));
+		for (int i = 0; i < 65; i += 4)
+			addParam(createParam<TL1105Red>(mm2px(Vec(12.00-2.709, 120.75-2.709 - 1.75*i)), module, QuantIntervals::INTERVAL_PARAMS + i));
+		for (int i = 1; i < 65; i += 4)
+			addParam(createParam<TL1105Red>(mm2px(Vec(31.00-2.709, 120.75-2.709 - 1.75*i)), module, QuantIntervals::INTERVAL_PARAMS + i));
+		for (int i = 2; i < 65; i += 4)
+			addParam(createParam<TL1105Red>(mm2px(Vec(17.00-2.709, 120.75-2.709 - 1.75*i)), module, QuantIntervals::INTERVAL_PARAMS + i));
+		for (int i = 3; i < 65; i += 4)
+			addParam(createParam<TL1105Red>(mm2px(Vec(36.00-2.709, 120.75-2.709 - 1.75*i)), module, QuantIntervals::INTERVAL_PARAMS + i));
+
+		for (int i = 0; i < 65; i += 2)
+			addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(22.00, 120.75 - 1.75*i)), module, QuantIntervals::INTERVAL_LIGHTS + i));
+		for (int i = 1; i < 65; i += 2)
+			addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(26.00, 120.75 - 1.75*i)), module, QuantIntervals::INTERVAL_LIGHTS + i));
 	}
 };
 
