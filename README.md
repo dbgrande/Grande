@@ -14,8 +14,8 @@ By David Grande
 
 
 
-~Microtonal Collection~
-=======================
+Microtonal Collection
+=====================
 
 ![Grande Microtonal Modules](images/microtonal_collection.png "Microtonal Collection")
 
@@ -114,8 +114,8 @@ An equal temperament microtonal note generator and display preprocessor.
 
 
 
-~The Others~
-============
+The Others
+==========
 ![Grande Plugins](images/grande_plugins.png "Available Modules")
 
 
