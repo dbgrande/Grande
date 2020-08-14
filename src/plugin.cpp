@@ -9,12 +9,10 @@ void init(Plugin* p) {
 
 	// Add modules here
 	// p->addModel(modelMyModule);
-	p->addModel(modelBlank1HP);
 	p->addModel(modelNoteMT);
 	p->addModel(modelQuant);
-	p->addModel(modelQuant31);
-	p->addModel(modelQuantMT);
 	p->addModel(modelQuantIntervals);
+	p->addModel(modelQuantMT);
 	p->addModel(modelSampleDelays);
 	p->addModel(modelScale);
 

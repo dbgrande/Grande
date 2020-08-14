@@ -14,14 +14,6 @@
   "changelogUrl": "",
   "modules": [
     {
-      "slug": "Blank1HP",
-      "name": "Blank1HP",
-      "description": "1HP-wide blank panel.",
-      "tags": [
-        "Blank"
-      ]
-    },
-    {
       "slug": "NoteMT",
       "name": "NoteMT",
       "description": "Microtonal note utility.",
@@ -39,9 +31,9 @@
       ]
     },
     {
-      "slug": "Quant31",
-      "name": "Quant31",
-      "description": "31-ET Quantizer with equi-likely notes mode.",
+      "slug": "QuantIntervals",
+      "name": "Quant Intervals",
+      "description": "Microtonal quantizer based on pitch intervals.",
       "tags": [
         "Quantizer",
         "Polyphonic"
@@ -51,15 +43,6 @@
       "slug": "QuantMT",
       "name": "QuantMT",
       "description": "Microtonal quantizer.",
-      "tags": [
-        "Quantizer",
-        "Polyphonic"
-      ]
-    },
-    {
-      "slug": "QuantIntervals",
-      "name": "Quant Intervals",
-      "description": "Microtonal quantizer based on pitch intervals.",
       "tags": [
         "Quantizer",
         "Polyphonic"
@@ -79,7 +62,7 @@
       "name": "Scale",
       "description": "Additional scales for Quant.",
       "tags": [
-        "Quantizer",
+        "Utility",
         "Polyphonic"
       ]
     }

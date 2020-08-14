@@ -10,11 +10,9 @@ extern Plugin* pluginInstance;
 
 // Declare each Model, defined in each module source file
 // extern Model* modelMyModule;
-extern Model* modelBlank1HP;
 extern Model* modelNoteMT;
 extern Model* modelQuant;
-extern Model* modelQuant31;
-extern Model* modelQuantMT;
 extern Model* modelQuantIntervals;
+extern Model* modelQuantMT;
 extern Model* modelSampleDelays;
 extern Model* modelScale;

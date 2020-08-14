@@ -4,54 +4,96 @@ Grande Modules for VCV Rack 1.0
 
 ***Getting closer, but they're still not ready for the Library or News-of-the-Rack.***
 
-Several former modules have been removed. This includes **CVInts**, **CVBigInts**, and **Frequency**, along with several preliminary microtonal quantizers.
-
-I'm currently reviewing the rest, along with undertaking massive changes to **QuantIntervals**, which has doubled in size.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 By David Grande
 
 
+***
 
-Microtonal Collection
-=====================
+Quant
+-----
+![Quant](images/Quant.png "Quant")
 
-![Grande Microtonal Modules](images/microtonal_collection.png "Microtonal Collection")
+**Normal 12-TET Quantizer with Equi-likely mode.**
+
+- **Scale:** Use **Scale** modules (see directly below) and polyphonic switch to allow selecting different scales.
+
+- **Root:** Defines root note of scale (1V/Oct, polyphonic), quantized.
+
+- **Rounding mode:** –1 (down) = round down, 0 (center) = round nearest, 1 (up) = round up.
+
+- **Equi-likely mode:** 0 (down) = off, 1 (up) = on.
+
+- **In:** CV input (1V/Oct, polyphonic).
+
+- **Out:** Quantized CV output (1V/Oct, polyphonic).
+
+- **Trigger:** Trigger whenever note changes (polyphonic).
+
+- **Note buttons:** Set current scale, or display externally defined scale. Root on bottom. Defaults to major scale. If no notes are selected, defaults to just the root note.
+
+**Explanation of Equi-likely mode**
+
+Equi-likely mode changes the evenness of notes across the scale. The following images show the differences between normal mode and equi-likely mode using the Blues Scale, which is particularly obvious with its note intervals of 321132. 
+
+![Blues Normal](images/blues_normal.png "Normal")
+
+**Normal quantization** (and rounding down)
+
+The probability of randomly getting each note (x-axis) depends on the interval between notes. Closely spaced notes are much less likely than farther spaced notes. With a random input, the probability of picking individual notes varies from 8% to 25%.
+
+![Blues Equi-likely](images/blues_equilikely.png "Equi-likely")
+
+**Equi-likely quantization** (and rounding down)
+
+In this case, every note is equally likely, with the probability of picking each note the same at 16.7.%
+
+However, equi-likely mode is best for random input voltages. It can cause unexpected note shifting for inputs that are already more-or-less quantized.
 
 
+***
 
-Quant31
--------
+Scale
+-----
+![Additional Scales](images/additional_scales.png "Additional Scales")
 
-A 31-TET microtonal quantizer with Equi-likely mode.
+**Extra scales for the Quant quantizer.**
 
-- The two small unmarked buttons at the top of the note selection column are "Set All" and "Clear All".
+- Use a polyphonic switch and plug into Scale input of **Quant.**
+- Sends 12 control signals using polyphonic cable (0V or 10V).
 
-- Same features as **Quant** (see below), except no external scale input, and 31 buttons.
 
-
+***
 
 QuantMT
 -------
+![QuantMT](images/QuantMT.png "QuantMT")
 
-A 1-TET through 31-TET microtonal quantizer, where the valid notes are defined directly.
+**A 1-TET through 31-TET microtonal quantizer.**
 
-- Notes/Oct knob defines temperament, from 1 to 31 (default 12).
+For this quantizer the valid notes are defined directly by number.
 
-- The note buttons between the two blue lights select valid notes. Notes outside this range are ignored.
+- **Quantizer features:** The same as **Quant** (see above), minus the external scale input. 
 
-- The two small unmarked buttons at the top of the note selection column are "Set All" and "Clear All".
+- **Notes/Oct:** Defines temperament, from 1 to 31 (default 12).
 
-- Quantizer features are the same as **Quant** (see below), minus the external scale input. 
+- **Note buttons:** Buttons between the two blue lights enable valid notes. Notes outside this range are ignored.
+
+- **Set All:** Left small unmarked button at top, enables all notes.
+
+- **Clear All:** Right small unmarked button at top, disables all notes, except for root note.
 
 
+***
 
 QuantIntervals
 --------------
+![QuantIntervals](images/QuantIntervals.png "QuantIntervals")
 
-A 1-TET through 31-TET microtonal quantizer, where the valid notes are defined indirectly by pitch intervals.
+**A 1-TET through 31-TET microtonal quantizer.**
 
+For this quantizer the valid notes are defined indirectly by pitch intervals.
 
 - The interval buttons select desired pitch intervals, which now include all 11-Limit intervals up to 35.
 
@@ -59,131 +101,80 @@ A 1-TET through 31-TET microtonal quantizer, where the valid notes are defined i
 
 - Only the closest intervals are generally highlighted. With so many intervals, it's common for more than one to be within tolerance of a valid note.
 
-**Note on sizes:**
+- **Quantizer features:** The same as **Quant** (see above), minus the external scale input. 
+
+**Note on sizes**
 
 With so many different intervals, I needed to provide ways to select and filter out subsets of ratios.
 
 - **small** = small ratios, with denominators ≤ 10, or 16:15 (C#), which is the only 12-TET chromatic note that wouldn't qualify as small.
+- **medium** = ratios in the 10's and 20's range.
 - **large** = ratios with 30+, or with denominators ≥ 25.
-- **medium** = all the rest in the middle.
 
-**Controls:**
+**Controls**
 
-- **Notes/Oct** — knob that defines temperament, from 1 to 31 (default 12).
+- **Notes/Oct:** Defines temperament, from 1 to 31 (default 12).
 
-- **Tolerance** — knob that defines required accuracy for matching, from 0 to 50 cents (default 20 cents).
+- **Tolerance:** Defines required accuracy for matching, from 0 to 50 cents (default 20 cents).
 
-- **Set Small** — Enables just the **small** intervals.
+- **Set Small:** Enables just the **small** intervals.
 
-- **Set All** — Enables **all** intervals.
+- **Set All:** Enables **all** intervals.
 
-- **Clear All** — Disables all intervals, except 1/1 unison.
+- **Clear All:** Disables all intervals, except 1/1 unison.
 
-- **Show Small** — Uses the lights to show all closest **small** intervals within tolerance of a valid note.
+- **Show Small:** Uses the lights to show all closest **small** intervals within tolerance of a valid note.
 
-- **Show Valid** — Uses the lights to show **all** closest intervals within tolerance of a valid note.
+- **Show Valid:** Uses the lights to show **all** closest intervals within tolerance of a valid note.
 
-- **Clear Invalid** — Deselects all intervals that don't have a light showing.
+- **Clear Invalid:** Disables all intervals that don't have a light showing.
 
-- **Remove Large** — Deselects all **large** intervals.
+- **Remove Large:** Disables all **large** intervals.
 
-- **Remove Medium** — Deselects all **medium** (and **large**) intervals.
+- **Remove Medium:** — Disables all **medium** (and **large**) intervals.
 
-- **Add 11s/7s/5s/3s** — Enables all intervals with the specified factor (in the numerator or denominator).
+- **Add 11s/7s/5s/3s:** — Enables all intervals with the specified factor to that limit. For example, **Add 7s** will add 7:5 and 15:14, but not 11:7.
 
-- **Just** — Gives an approximation to Just temperament (independent of Notes/Oct). Current worst case error is one cent.
+- **Just:** Gives an approximation to Just temperament (independent of Notes/Oct). Current worst case error is one cent.
 
-- **Show Notes** — Displays actual notes being used on left column of blue lights (root note at bottom). Useful for understanding what this quantizer is doing, and allows converting its results to another quantizer, like **QuantMT.** However, this feature is disabled when using Just temperament.
-
-**Quantizer features:** are the same as **Quant** (see below), minus the external scale input. 
+- **Show Notes:** Displays actual notes being used on left column of blue lights (root note at bottom). Useful for understanding what this quantizer is doing, and allows converting its results to another quantizer, like **QuantMT.** However, this feature is disabled when using Just temperament.
 
 
+***
 
 NoteMT
 ------
+![NoteMT](images/NoteMT.png "NoteMT")
 
-An equal temperament microtonal note generator and display preprocessor.
+**A 1-TET through 31-TET microtonal note generator and display preprocessor.**
 
-- Notes/Oct knob defines temperament, from 1-TET through 31-TET (default 12-TET).
+- **Octave** and **Note** knobs: Set octave and note based on current temperament. Note knob clamped to Notes/Oct – 1.
 
-- Octave and Note knobs set voltage of V/Oct output based current temperament, with Note knob clamped to Notes/Oct – 1.
+- **V/Oct:** Output voltage defined by Octave and Note knobs.
 
-- Octave and Note outputs convert V/Oct-In voltage (or knobs if input unconnected) into a pair of integer voltages. These can be displayed on a voltmeter, like the one from ML Modules.
+- **V/Oct-In:** Input voltage to preprocess for display. If unconnected, normalized to V/Oct output.
+
+- **Octave** and **Note** outputs: Convert V/Oct-In voltage (or knobs if input unconnected) into a pair of integer voltages. These can be displayed on a voltmeter, like the one from ML Modules.
+
+- **Notes/Oct:** Defines temperament, from 1 to 31 (default 12).
 
 - A blue light at the top turns on when the Note output values are integers, indicating that the Notes/Oct setting is likely matching the V/Oct-In source. However, this is not guaranteed.
 
 
-
-The Others
-==========
-![Grande Plugins](images/grande_plugins.png "Available Modules")
-
-
-Blank1HP
---------
-
-Blank panel.
-
-
-Quant
------
-
-12-TET Quantizer with Equi-likely mode.
-
-- Scale (input): Use **Scale** modules and polyphonic switch to allow selecting different scales.
-
-- Root (input): Defines root note of scale (1V/Oct, polyphonic), quantized.
-
-- Rounding mode (switch): –1 (down) = round down, 0 (center) = round nearest, 1 (up) = round up
-
-- Equi-likely mode (switch): 0 (down) = off, 1 (up) = on
-
-- In (input): CV input (1V/Oct, polyphonic)
-
-- Out (output): Quantized CV output (1V/Oct, polyphonic)
-
-- Trigger (output): Trigger whenever note changes (polyphonic)
-
-- Twelve buttons: Set current scale, or display externally defined scale. Root on bottom. Defaults to major scale. If no notes are selected, defaults to just the root note.
-
-
-**Blues Scale using Normal quantization and rounding down:**
-
-![Blues Normal](images/blues_normal.png "Normal")
-
-The probability of randomly getting each note (x-axis) depends on the interval between notes. Closely spaced notes are much less likely than farther spaced notes.
-
-The Blues Scale is particularly obvious with its intervals of 321132, where the probability of picking individual notes varies from 8% to 25%.
-
-
-**Blues Scale using Equi-likely quantization and rounding down:**
-
-![Blues Equi-likely](images/blues_equilikely.png "Equi-likely")
-
-For comparison, here is the Blues Scale using Equi-likely mode.
-
-**Note:** This equi-likely mode is best for random input frequencies. It may cause unexpected note shifting for inputs that are already more-or-less quantized.
-
-
-Scale
------
-
-Provides extra scales for **Quant** quantizer.
-
-- Use a polyphonic switch and plug into Scale input of **Quant.**
-- Sends 12 control signals using polyphonic cable (0V or 10V).
-
-![Additional Scales](images/additional_scales.png "Additional Scales")
-
+***
 
 SampleDelays (SD)
 -----------------
+![SampleDelays](images/SampleDelays.png "SampleDelays")
+
+**3 sample delay buffer chains.**
 
 Provides three sample-delay buffer chains giving one or two sample delays each.
 
 - Internally chained together to give up to six sample delays.
 
 
+***
 
 License
 -------
