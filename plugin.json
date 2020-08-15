@@ -3,11 +3,10 @@
   "name": "Grande",
   "version": "1.0.0",
   "license": "GPL-3.0-or-later",
-  "brand": "Grande",
   "author": "David Grande",
   "authorEmail": "dbgrande246@gmail.com",
   "authorUrl": "",
-  "pluginUrl": "https://github.com/dbgrande/Grande",
+  "pluginUrl": "",
   "manualUrl": "https://github.com/dbgrande/Grande",
   "sourceUrl": "https://github.com/dbgrande/Grande",
   "donateUrl": "",
@@ -17,54 +16,43 @@
       "slug": "NoteMT",
       "name": "NoteMT",
       "description": "Microtonal note utility.",
-      "tags": [
-        "Utility"
-      ]
+      "manualUrl": "https://github.com/dbgrande/Grande/#notemt",
+      "tags": ["Utility"]
     },
     {
       "slug": "Quant",
       "name": "Quant",
       "description": "Quantizer with equi-likely notes mode.",
-      "tags": [
-        "Quantizer",
-        "Polyphonic"
-      ]
+      "manualUrl": "https://github.com/dbgrande/Grande/#quant",
+      "tags": ["Quantizer", "Polyphonic"]
     },
     {
       "slug": "QuantIntervals",
       "name": "Quant Intervals",
       "description": "Microtonal quantizer based on pitch intervals.",
-      "tags": [
-        "Quantizer",
-        "Polyphonic"
-      ]
+      "manualUrl": "https://github.com/dbgrande/Grande/#quantintervals",
+      "tags": ["Quantizer", "Polyphonic"]
     },
     {
       "slug": "QuantMT",
       "name": "QuantMT",
       "description": "Microtonal quantizer.",
-      "tags": [
-        "Quantizer",
-        "Polyphonic"
-      ]
+      "manualUrl": "https://github.com/dbgrande/Grande/#quantmt",
+      "tags": ["Quantizer", "Polyphonic"]
     },
     {
       "slug": "SampleDelays",
       "name": "SampleDelays",
       "description": "Provides multiple sample delay options.",
-      "tags": [
-        "Delay",
-        "Polyphonic"
-      ]
+      "manualUrl": "https://github.com/dbgrande/Grande/#sampledelays",
+      "tags": ["Delay", "Polyphonic"]
     },
     {
       "slug": "Scale",
       "name": "Scale",
       "description": "Additional scales for Quant.",
-      "tags": [
-        "Utility",
-        "Polyphonic"
-      ]
+      "manualUrl": "https://github.com/dbgrande/Grande/#scale",
+      "tags": ["Utility", "Polyphonic"]
     }
   ]
 }

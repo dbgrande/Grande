@@ -256,22 +256,21 @@ struct QuantMTWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 3 * RACK_GRID_WIDTH, 0)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		addParam(createParamCentered<RoundSmallRotarySwitch>(mm2px(Vec(24.0, 24.50)), module, QuantMT::SIZE_PARAM));
+		addParam(createParamCentered<RoundBlackRotarySwitch>(mm2px(Vec(22.24, 38.50)), module, QuantMT::SIZE_PARAM));
 
-		addParam(createParam<ConfigButton>(mm2px(Vec(5.0, 2.5)), module, QuantMT::SEL_ALL_PARAM));
-		addParam(createParam<ConfigButton>(mm2px(Vec(9.5, 2.5)), module, QuantMT::CLEAR_ALL_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(18.5-2.709, 23.5-2.709)), module, QuantMT::SEL_ALL_PARAM));
+		addParam(createParam<TL1105>(mm2px(Vec(26.0-2.709, 23.5-2.709)), module, QuantMT::CLEAR_ALL_PARAM));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(24.0, 38.0)), module, QuantMT::ROOT_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(22.24, 54.0)), module, QuantMT::ROOT_INPUT));
 
-		addParam(createParam<CKSSThree>(mm2px(Vec(21.75, 49.0)), module, QuantMT::ROUNDING_PARAM));
+		addParam(createParam<CKSSThree>(mm2px(Vec(16.25, 65.5)), module, QuantMT::ROUNDING_PARAM));
+		addParam(createParam<CKSS>(mm2px(Vec(23.75, 67.0)), module, QuantMT::EQUI_PARAM));
 
-		addParam(createParam<CKSS>(mm2px(Vec(21.75, 67.0)), module, QuantMT::EQUI_PARAM));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(22.24, 85.0)), module, QuantMT::CV_IN_INPUT));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(24.0, 85.0)), module, QuantMT::CV_IN_INPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(22.24, 100.0)), module, QuantMT::CV_OUT_OUTPUT));
 
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(24.0, 100.0)), module, QuantMT::CV_OUT_OUTPUT));
-
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(24.0, 115.0)), module, QuantMT::TRIGGER_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(22.24, 115.0)), module, QuantMT::TRIGGER_OUTPUT));
 
 		addParam(createParam<RectButton>(mm2px(Vec(5.2, 6.160)), module, QuantMT::NOTE_PARAMS + 30));
 		addParam(createParam<RectButton>(mm2px(Vec(5.2, 10.031)), module, QuantMT::NOTE_PARAMS + 29));

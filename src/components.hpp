@@ -32,16 +32,6 @@ struct RectButton : SvgSwitch {
   }
 };
 
-struct ConfigButton : SvgSwitch {
-  ConfigButton() {
-    momentary = true;
-    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/ConfigButton0.svg")));
-    addFrame(APP->window->loadSvg(asset::plugin(pluginInstance, "res/ConfigButton1.svg")));
-    fb->removeChild(shadow);
-    delete shadow;
-  }
-};
-
 struct TL1105Red : SvgSwitch {
   TL1105Red() {
     momentary = false;

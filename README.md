@@ -80,9 +80,9 @@ For this quantizer the valid notes are defined directly by number.
 
 - **Note buttons:** Buttons between the two blue lights enable valid notes. Notes outside this range are ignored.
 
-- **Set All:** Left small unmarked button at top, enables all notes.
+- **Set All:** Enables all notes.
 
-- **Clear All:** Right small unmarked button at top, disables all notes, except for root note.
+- **Clear All:** Disables all notes, except for root note.
 
 
 ***
