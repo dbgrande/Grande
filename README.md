@@ -2,7 +2,11 @@ Grande Modules for VCV Rack 1.0
 ===============================
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-***Getting closer, but they're still not ready for the Library or News-of-the-Rack.***
+***Still more changes.***
+
+By changing QuantInterval's buttons back and adding the next two intervals, 36:35 and 36:25, I was able to increase all the microtonal modules to 34-TET.
+
+***Still not ready for the Library or News-of-the-Rack.***
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -70,13 +74,13 @@ QuantMT
 -------
 ![QuantMT](images/QuantMT.png "QuantMT")
 
-**A 1-TET through 31-TET microtonal quantizer.**
+**A 1-TET through 34-TET microtonal quantizer.**
 
 For this quantizer the valid notes are defined directly by number.
 
 - **Quantizer features:** The same as **Quant** (see above), minus the external scale input. 
 
-- **Notes/Oct:** Defines temperament, from 1 to 31 (default 12).
+- **Notes/Oct:** Defines temperament, from 1 to 34 (default 12).
 
 - **Note buttons:** Buttons between the two blue lights enable valid notes. Notes outside this range are ignored.
 
@@ -91,11 +95,11 @@ QuantIntervals
 --------------
 ![QuantIntervals](images/QuantIntervals.png "QuantIntervals")
 
-**A 1-TET through 31-TET microtonal quantizer.**
+**A 1-TET through 34-TET microtonal quantizer.**
 
 For this quantizer the valid notes are defined indirectly by pitch intervals.
 
-- The interval buttons select desired pitch intervals, which now include all 11-Limit intervals up to 35.
+- The interval buttons select desired pitch intervals, which now include all 11-Limit intervals up to 36.
 
 - However, these intervals need to be mapped to notes in the selected temperament. Valid notes are those that match selected intervals within the specified tolerance. These are indicated by a blue light, with the brightness indicating how close the match is.
 
@@ -113,7 +117,7 @@ With so many different intervals, I needed to provide ways to select and filter 
 
 **Controls**
 
-- **Notes/Oct:** Defines temperament, from 1 to 31 (default 12).
+- **Notes/Oct:** Defines temperament, from 1 to 34 (default 12).
 
 - **Tolerance:** Defines required accuracy for matching, from 0 to 50 cents (default 20 cents).
 
@@ -146,7 +150,7 @@ NoteMT
 ------
 ![NoteMT](images/NoteMT.png "NoteMT")
 
-**A 1-TET through 31-TET microtonal note generator and display preprocessor.**
+**A 1-TET through 34-TET microtonal note generator and display preprocessor.**
 
 - **Octave** and **Note** knobs: Set octave and note based on current temperament. Note knob clamped to Notes/Oct – 1.
 
@@ -156,7 +160,7 @@ NoteMT
 
 - **Octave** and **Note** outputs: Convert V/Oct-In voltage (or knobs if input unconnected) into a pair of integer voltages. These can be displayed on a voltmeter, like the one from ML Modules.
 
-- **Notes/Oct:** Defines temperament, from 1 to 31 (default 12).
+- **Notes/Oct:** Defines temperament, from 1 to 34 (default 12).
 
 - A blue light at the top turns on when the Note output values are integers, indicating that the Notes/Oct setting is likely matching the V/Oct-In source. However, this is not guaranteed.
 

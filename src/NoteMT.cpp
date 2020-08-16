@@ -26,15 +26,15 @@ struct NoteMT : Module {
 
 	NoteMT() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
-		configParam(PITCH_PARAM, 0.f, 30.f, 0.f, "Note", "");
-		configParam(OCTAVE_PARAM, -4, 4, 0, "Octave", "");
-		configParam(SIZE_PARAM, 1, 31, 12, "Notes per Octave", "");
+		configParam(PITCH_PARAM, 0.f, 33.f, 0.f, "Note", "");
+		configParam(OCTAVE_PARAM, -5, 5, 0, "Octave", "");
+		configParam(SIZE_PARAM, 1, 34, 12, "Notes per Octave", "");
 	}
 
 	void process(const ProcessArgs &args) override {
-		int pitch = clamp((int)(params[PITCH_PARAM].getValue()), 0, 30);
-		int octave = clamp((int)(params[OCTAVE_PARAM].getValue()), -4, 4);
-		int size = clamp((int)(params[SIZE_PARAM].getValue()), 1, 31);
+		int pitch = clamp((int)(params[PITCH_PARAM].getValue()), 0, 33);
+		int octave = clamp((int)(params[OCTAVE_PARAM].getValue()), -5, 5);
+		int size = clamp((int)(params[SIZE_PARAM].getValue()), 1, 34);
 
 		if (pitch >= size)
 			pitch = size - 1;
