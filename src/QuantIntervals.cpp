@@ -551,14 +551,14 @@ struct QuantIntervalsWidget : ModuleWidget {
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(74.00, 115.0)), module, QuantIntervals::TRIGGER_OUTPUT));
 
 		for (int i = 0; i < 67; i += 2)
-			addParam(createParam<RectButton>(mm2px(Vec(13.70-3.50, 122.50 - 1.6 - 1.75*i)), module, QuantIntervals::INTERVAL_PARAMS + i));
+			addParam(createParam<RectButton>(mm2px(Vec(14.00-3.50, 122.50 - 1.6 - 1.75*i)), module, QuantIntervals::INTERVAL_PARAMS + i));
 		for (int i = 1; i < 67; i += 2)
 			addParam(createParam<RectButton>(mm2px(Vec(30.00-3.50, 122.50 - 1.6 - 1.75*i)), module, QuantIntervals::INTERVAL_PARAMS + i));
 
 		for (int i = 0; i < 67; i += 2)
-			addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(20.00, 122.50 - 1.75*i)), module, QuantIntervals::INTERVAL_LIGHTS + i));
+			addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(20.25, 122.50 - 1.75*i)), module, QuantIntervals::INTERVAL_LIGHTS + i));
 		for (int i = 1; i < 67; i += 2)
-			addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(23.86, 122.50 - 1.75*i)), module, QuantIntervals::INTERVAL_LIGHTS + i));
+			addChild(createLightCentered<SmallLight<BlueLight>>(mm2px(Vec(23.75, 122.50 - 1.75*i)), module, QuantIntervals::INTERVAL_LIGHTS + i));
 	}
 };
 
