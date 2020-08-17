@@ -64,8 +64,9 @@ Scale
 
 **Extra scales for the Quant quantizer.**
 
-- Use a polyphonic switch and plug into Scale input of **Quant.**
-- Sends 12 control signals using polyphonic cable (0V or 10V).
+- Sends 12 control signals using a polyphonic cable (0V or 10V).
+
+- Use a polyphonic switch, like the one from Bogaudio, and plug it into the Scale input of **Quant.**
 
 
 ***
